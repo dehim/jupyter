@@ -1,4 +1,4 @@
-FROM dehim/ubuntu-novnc:3.8.10.1
+FROM dehim/ubuntu-novnc:3.8.10.2
 # certifi             2019.11.28
 # chardet             3.0.4
 # dbus-python         1.2.16
@@ -34,17 +34,12 @@ RUN cd /usr/src \
     && python -m pip install --upgrade \
          joblib \
          Cython \
-         # 解决 numpy安装时报错：libraries mkl_rt not found
-        #  scipy \
-         exchange-calendars \
          ipyparallel \
         #  six \
         #  wheel \
          pytz \
          retrying \
-         psycopg2  \
          ta-lib \
-         psycopg2-binary \
          statsmodels \
          dataclasses \
          qdarkstyle \
@@ -86,7 +81,6 @@ RUN cd /usr/src \
     # && rm -rf /usr/src/* \
 
     # 对应的shareVolume_文件夹操作
-    && touch /shareVolume_demo/config/vnpy/log/default.log \
     && mkdir -p /shareVolume_demo/config/jupyter \
     
     && echo "{" \

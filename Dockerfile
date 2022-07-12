@@ -24,13 +24,25 @@ FROM dehim/jupyter:3.8.10.3
 
 RUN cd /usr/src \
     apt-get update \
+    # 解决 Could NOT find OCaml
+    && apt-get install -y ocaml \ 
+
+    
     #  libmkl-rt \
+#7 459.2 -- Could NOT find Python module pygments
+#7 459.2 -- Could NOT find Python module pygments.lexers.c_cpp
+#7 459.2 -- Could NOT find Python module yaml
+   && python -m pip install --upgrade \
+         pygments \
+         pyyaml \
 
     # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
     && cd /usr/src \
     && git clone https://github.com/root-project/cling.git \
     && cd cling/tools/packaging \
-    && echo 'yes' |./cpt.py --check-requirements \
+
+    # output clipped, log limit 1MiB reached,只能输出到空管道
+    && echo 'yes' |./cpt.py --check-requirements > /dev/null \
     && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ \
 
     && rm -rf /tmp/* \

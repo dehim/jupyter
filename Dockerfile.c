@@ -1,4 +1,4 @@
-FROM dehim/jupyter:3.8.10.5
+FROM dehim/jupyter:3.8.10.7
 # FROM dehim/ubuntu-novnc:3.8.10.1
 # certifi             2019.11.28
 # chardet             3.0.4
@@ -31,7 +31,7 @@ RUN cd /usr/src \
     && cd cling/tools/packaging \
 
     # output clipped, log limit 1MiB reached,只能输出到空管道
-    && echo 'yes' |./cpt.py --check-requirements > /dev/null \
+    && $(echo 'yes' |./cpt.py --check-requirements) > /dev/null \
     && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ \
 
     && rm -rf /tmp/* \

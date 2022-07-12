@@ -1,5 +1,4 @@
-FROM dehim/jupyter:3.8.10.3
-# FROM dehim/ubuntu-novnc:3.8.10.1
+FROM dehim/ubuntu-novnc:3.8.10.3
 # certifi             2019.11.28
 # chardet             3.0.4
 # dbus-python         1.2.16
@@ -22,31 +21,92 @@ FROM dehim/jupyter:3.8.10.3
 # wheel               0.37.1
 
 
+
+
 RUN cd /usr/src \
     apt-get update \
     # 解决 Could NOT find OCaml
     && apt-get install -y ocaml \ 
-
-    
     #  libmkl-rt \
+
+# ipyparallel:用于jupyter, Clusters tab is now provided by IPython parallel. See 'IPython parallel' for installation details.
+
+# 安装cling需要pygments和yaml
 #7 459.2 -- Could NOT find Python module pygments
 #7 459.2 -- Could NOT find Python module pygments.lexers.c_cpp
 #7 459.2 -- Could NOT find Python module yaml
-   && python -m pip install --upgrade \
+    && python -m pip install --upgrade \
          pygments \
          pyyaml \
+         joblib \
+         Cython \
+         ipyparallel \
+        #  six \
+        #  wheel \
+         pytz \
+         retrying \
+         ta-lib \
+         statsmodels \
+         dataclasses \
+         qdarkstyle \
+         peewee \
+         pymysql \
+         wmi \
+         quickfix \
+         jupyter \
+         jupyterlab \
+         jupyterthemes \
+         jupyter_contrib_nbextensions \
+         jupyter_nbextensions_configurator \
+         pandas \
 
-    # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
-    && cd /usr/src \
-    && git clone https://github.com/root-project/cling.git \
-    && cd cling/tools/packaging \
 
-    # output clipped, log limit 1MiB reached,只能输出到空管道
-    && echo 'yes' |./cpt.py --check-requirements > /dev/null \
-    && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ \
+    && mkdir -p /shareVolume/config/jupyter/ \
+    && ln -s /shareVolume/config/jupyter ~/.jupyter \
+    && jupyter notebook --generate-config --allow-root \
+    # 查看可用jupyter主题 jt -l
+    # 应用主题
+    # 设置密码： jupyter notebook password
+    # 深色
+    # && jt -t chesterish -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
+    # 浅色
+    # && jt -t grade3 -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
+    && jupyter contrib nbextension install --user \
+    && mv /shareVolume/config/jupyter /shareVolume_demo/config/ \
+    # 设置默认IP
+    && echo "\n" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.allow_root = True" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.open_browser = False" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.ip = '0.0.0.0'" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.port = 8888" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+
+
 
     && rm -rf /tmp/* \
     # && rm -rf /usr/src/* \
+
+    # 对应的shareVolume_文件夹操作
+    && mkdir -p /shareVolume_demo/config/jupyter \
+    
+    && echo "{" \
+            "\n  \"NotebookApp\": {" \
+            "\n    \"nbserver_extensions\": {" \
+            "\n      \"jupyter_nbextensions_configurator\": true" \
+            "\n    }" 	        "\n  }" \
+            "\n}" \
+            > /shareVolume_demo/config/jupyter/jupyter_notebook_config.json \
+    && echo "[program:jupyterLab]" \
+            "\ncommand=jupyter lab --ip=0.0.0.0 --port=8888" \
+            "\nautostart=true" \
+            "\nautorestart=true" \
+            "\npriority=60" \
+            > /shareVolume_demo/config/supervisor/jupyterLab.ini.bak \
+    && echo "[program:jupyterNotebook]" \
+            "\ncommand=jupyter notebook --allow-root --ip=0.0.0.0 --port=8888" \
+            "\nautostart=true" \
+            "\nautorestart=true" \
+            "\npriority=60" \
+            > /shareVolume_demo/config/supervisor/jupyterNotebook.ini \
 
     && apt-get clean 
 

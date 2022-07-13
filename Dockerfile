@@ -33,8 +33,9 @@ RUN cd /usr/src \
     # output clipped, log limit 1MiB reached,只能输出到空管道
     # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
     # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
-    && ./cpt.py --check-requirements <<< "yes
-"  > /dev/null \
+    && ./cpt.py --check-requirements << EOF
+yes
+EOF  > /dev/null \
     && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ \
 
     && rm -rf /tmp/* \

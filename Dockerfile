@@ -35,8 +35,9 @@ RUN cd /usr/src \
     # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
     # && yes yes | ./cpt.py --check-requirements > /dev/null \
     # 发现还有个-y参数
-    && ./cpt.py --check-requirements \
-    && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ > /dev/null \
+    # 标准输出进了黑洞，错误输出打印到屏幕
+    && ./cpt.py --check-requirements 2>&1 >/dev/null \
+    && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
 
     && rm -rf /tmp/* \
     # && rm -rf /usr/src/* \

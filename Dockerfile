@@ -70,6 +70,7 @@ RUN cd /usr/src \
     # # && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
     # && ./cpt.py --last-stable=pkg --create-dev-env Debug --with-workdir=/ec/build 2>&1 >/dev/null \
 
+    && cd / \
     && rm -rf /tmp/* \
     && rm -rf /usr/src/* \
 

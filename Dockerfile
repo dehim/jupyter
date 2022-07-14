@@ -26,13 +26,28 @@ RUN cd /usr/src \
     && apt-get update \
 
 
+     && wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip \
+     && unzip ninja-linux.zip -d /usr/bin/
+
+
     # 先试试手动安装 llvm
     && cd /usr/src \
     && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project \
     && mkdir _build \
     && cd _build \
-    && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=MinSizeRel \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DLLVM_TARGETS_TO_BUILD=X86 \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+      -G "Ninja" ../llvm \
+    # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
     && cmake --build . \
     && make \
     && make install \

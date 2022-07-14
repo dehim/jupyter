@@ -49,8 +49,8 @@ RUN cd /usr/src \
       -G "Ninja" ../llvm \
     # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
     && cmake --build . \
-    && make \
-    && make install \
+    # && make \
+    # && make install \
     
 
 

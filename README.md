@@ -15,3 +15,6 @@ docker run -d -p 80:80 -p 8888:8888 \
 
 - 3.8.10.7
   - add ocaml pygments pyyaml z3
+
+- 3.8.10.10
+  - add llvm

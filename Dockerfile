@@ -25,22 +25,38 @@ FROM dehim/jupyter:3.8.10.9
 RUN cd /usr/src \
     && apt-get update \
 
-    # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
-    && cd /usr/src \
-    && git clone https://github.com/root-project/cling.git \
-    && cd cling/tools/packaging \
 
-    # output clipped, log limit 1MiB reached,只能输出到空管道
-    # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
-    # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
-    # && yes yes | ./cpt.py --check-requirements > /dev/null \
-    # 发现还有个-y参数
-    # 标准输出进了黑洞，错误输出打印到屏幕
-    && ./cpt.py --check-requirements 2>&1 >/dev/null \
-    && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
+    # 先试试手动安装 llvm
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    && cd llvm-project \
+    && mkdir _build \
+    && cd _build \
+    && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    && cmake --build . \
+    && make \
+    && make install \
+    
+
+
+
+    # # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
+    # && cd /usr/src \
+    # && git clone https://github.com/root-project/cling.git \
+    # && cd cling/tools/packaging \
+
+    # # output clipped, log limit 1MiB reached,只能输出到空管道
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && yes yes | ./cpt.py --check-requirements > /dev/null \
+    # # 发现还有个-y参数
+    # # 标准输出进了黑洞，错误输出打印到屏幕
+    # && ./cpt.py --check-requirements 2>&1 >/dev/null \
+    # # && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
+    # && ./cpt.py --last-stable=pkg --create-dev-env Debug --with-workdir=/ec/build 2>&1 >/dev/null \
 
     && rm -rf /tmp/* \
-    # && rm -rf /usr/src/* \
+    && rm -rf /usr/src/* \
 
     && apt-get clean 
 

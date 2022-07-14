@@ -27,7 +27,7 @@ RUN cd /usr/src \
 
 
      && wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip \
-     && unzip ninja-linux.zip -d /usr/bin/
+     && unzip ninja-linux.zip -d /usr/bin/ \
 
 
     # 先试试手动安装 llvm

@@ -57,7 +57,7 @@ RUN cd / \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
       -G "Ninja" ../llvm_source \
-    && cmake --build . \
+    && cmake --build . 2>&1 >/dev/null \
     && cmake --build . --target install \
 
     # && git clone -b cling-patches http://root.cern.ch/git/llvm.git \

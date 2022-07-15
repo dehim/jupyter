@@ -26,8 +26,8 @@ RUN cd / \
     && apt-get update \
 
     && cd /usr/src \
-    && git clone http://root.cern/git/llvm.git src \
-    && cd src \
+    && git clone http://root.cern/git/llvm.git llvm_source \
+    && cd llvm_source \
     && git checkout cling-patches \
     && cd tools \
     && git clone http://root.cern/git/cling.git \
@@ -35,7 +35,7 @@ RUN cd / \
     && cd clang \
     && git checkout cling-patches \
 
-    && cd /usr/src/src \
+    && cd /usr/src \
     && mkdir build \
     && cd build \
     && cmake \
@@ -53,7 +53,7 @@ RUN cd / \
       -DLLVM_BUILD_EXAMPLES=false \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
-      -G "Ninja" ../src \
+      -G "Ninja" ../llvm_source \
     && cmake --build . \
     && cmake --build . --target install \
 

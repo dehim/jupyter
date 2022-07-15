@@ -34,8 +34,8 @@ RUN cd / \
     && git clone http://root.cern/git/clang.git \
     && cd clang \
     && git checkout cling-patches \
-    && cd ../.. \
 
+    && cd /usr/src/src \
     && mkdir build \
     && cd build \
     && cmake \

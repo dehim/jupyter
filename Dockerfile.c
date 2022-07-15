@@ -1,4 +1,4 @@
-FROM dehim/jupyter:3.8.10.9
+FROM dehim/jupyter:3.8.10.12
 # FROM dehim/ubuntu-novnc:3.8.10.1
 # certifi             2019.11.28
 # chardet             3.0.4
@@ -25,19 +25,15 @@ FROM dehim/jupyter:3.8.10.9
 RUN cd /usr/src \
     && apt-get update \
 
-    
-     && wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip \
-     && unzip ninja-linux.zip -d /usr/bin/ \
-
     && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
     && cd llvm/tools \
     && git clone http://root.cern.ch/git/cling.git \
     && git clone -b cling-patches http://root.cern.ch/git/clang.git \
-
-    && mkdir build \
-    && cd build \
+    && cd .. \
+    && mkdir _build \
+    && cd _build \
     && cmake \
-      -DCMAKE_BUILD_TYPE=MinSizeRel \
+      -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
       -DBUILD_SHARED_LIBS=ON \
       -DLLVM_CCACHE_BUILD=OFF \

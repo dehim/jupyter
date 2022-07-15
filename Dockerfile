@@ -33,16 +33,6 @@ RUN cd /usr/src \
     && unzip ninja-linux.zip -d /usr/bin/ \
 
 
-    # 安装 ocaml
-    && cd /usr/src/ \
-    && git clone https://github.com/ocaml/ocaml.git \
-    && cd ocaml \
-    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
-    && make \
-    && make install \
-    && rm -rf /usr/src/* \
-
-
 
 # ipyparallel:用于jupyter, Clusters tab is now provided by IPython parallel. See 'IPython parallel' for installation details.
 
@@ -96,6 +86,19 @@ RUN cd /usr/src \
     && echo "c.ServerApp.open_browser = False" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
     && echo "c.ServerApp.ip = '0.0.0.0'" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
     && echo "c.ServerApp.port = 8888" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+
+
+
+
+    # 安装 ocaml
+    && cd /usr/src/ \
+    && git clone https://github.com/ocaml/ocaml.git \
+    && cd ocaml \
+    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
+    && make \
+    && make install \
+    && rm -rf /usr/src/* \
+
 
 
 

@@ -22,16 +22,22 @@ FROM dehim/jupyter:3.8.10.13
 # wheel               0.37.1
 
 
-RUN cd /usr/src \
+RUN cd / \
     && apt-get update \
 
-    && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
-    && cd llvm/tools \
-    && git clone http://root.cern.ch/git/cling.git \
-    && git clone -b cling-patches http://root.cern.ch/git/clang.git \
-    && cd .. \
-    && mkdir _build \
-    && cd _build \
+    && cd /usr/src \
+    && git clone http://root.cern/git/llvm.git src \
+    && cd src \
+    && git checkout cling-patches \
+    && cd tools \
+    && git clone http://root.cern/git/cling.git \
+    && git clone http://root.cern/git/clang.git \
+    && cd clang \
+    && git checkout cling-patches \
+    && cd ../.. \
+
+    && mkdir build \
+    && cd build \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
@@ -47,9 +53,35 @@ RUN cd /usr/src \
       -DLLVM_BUILD_EXAMPLES=false \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
-      -G "Ninja" ../llvm \
+      -G "Ninja" ..\src \
     && cmake --build . \
     && cmake --build . --target install \
+
+    # && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
+    # && cd llvm/tools \
+    # && git clone http://root.cern.ch/git/cling.git \
+    # && git clone -b cling-patches http://root.cern.ch/git/clang.git \
+    # && cd .. \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
 
 
 

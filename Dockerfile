@@ -88,7 +88,7 @@ RUN cd /usr/src \
 
     # 安装 pygments.(如果通过pip安装，会导致llvm找不到)
     && cd /usr/src/ \
-    && git clone https://github.com/pygments/pygments.git
+    && git clone https://github.com/pygments/pygments.git \
     && cd pygments \
     && python setup.py install \
 

@@ -1,4 +1,5 @@
-FROM dehim/ubuntu-novnc:3.8.10.5
+FROM dehim/jupyter:3.8.10.15
+# FROM dehim/ubuntu-novnc:3.8.10.1
 # certifi             2019.11.28
 # chardet             3.0.4
 # dbus-python         1.2.16
@@ -21,113 +22,139 @@ FROM dehim/ubuntu-novnc:3.8.10.5
 # wheel               0.37.1
 
 
-
-
-RUN cd /usr/src \
-    #  libmkl-rt \
+RUN cd / \
     && apt-get update \
-    && apt-get install -y z3 \
 
-    # 安装 ninja
-    && wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip \
-    && unzip ninja-linux.zip -d /usr/bin/ \
+    && cd /usr/src \
+    && git clone http://root.cern/git/llvm.git src \
+    && cd src \
+    && git checkout cling-patches \
+    && cd tools \
+    && git clone http://root.cern/git/cling.git \
+    && git clone http://root.cern/git/clang.git \
+    && cd clang \
+    && git checkout cling-patches \
+    && cd ../.. \
 
+    && mkdir build \
+    && cd build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_TARGETS_TO_BUILD=X86 \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+      -DLLVM_BUILD_LLVM_DYLIB=true \
+      -DLLVM_LINK_LLVM_DYLIB=true \
+      -DLLVM_BUILD_TOOLS=false \
+      -DLLVM_BUILD_EXAMPLES=false \
+      -DLLVM_BUILD_TESTS=false \
+      -DLLVM_BUILD_DOCS=false \
+      -G "Ninja" ..\src \
+    && cmake --build . \
+    && cmake --build . --target install \
 
-
-# ipyparallel:用于jupyter, Clusters tab is now provided by IPython parallel. See 'IPython parallel' for installation details.
-
-# 安装cling需要pygments和yaml
-#7 457.2 -- Could NOT find Z3
-#7 459.2 -- Could NOT find Python module pygments
-#7 459.2 -- Could NOT find Python module pygments.lexers.c_cpp
-#7 459.2 -- Could NOT find Python module yaml
-
-    && python -m pip install --upgrade \
-         z3 \
-         joblib \
-         Cython \
-         ipyparallel \
-        #  six \
-        #  wheel \
-         pytz \
-         retrying \
-         ta-lib \
-         statsmodels \
-         dataclasses \
-         qdarkstyle \
-         peewee \
-         pymysql \
-         wmi \
-         quickfix \
-         jupyter \
-         jupyterlab \
-         jupyterthemes \
-         jupyter_contrib_nbextensions \
-         jupyter_nbextensions_configurator \
-         pandas \
-
-    && mkdir -p /shareVolume/config/jupyter/ \
-    && ln -s /shareVolume/config/jupyter ~/.jupyter \
-    && jupyter notebook --generate-config --allow-root \
-    # 查看可用jupyter主题 jt -l
-    # 应用主题
-    # 设置密码： jupyter notebook password
-    # 深色
-    # && jt -t chesterish -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
-    # 浅色
-    # && jt -t grade3 -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
-    && jupyter contrib nbextension install --user \
-    && mv /shareVolume/config/jupyter /shareVolume_demo/config/ \
-    # 设置默认IP
-    && echo "\n" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
-    && echo "c.ServerApp.allow_root = True" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
-    && echo "c.ServerApp.open_browser = False" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
-    && echo "c.ServerApp.ip = '0.0.0.0'" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
-    && echo "c.ServerApp.port = 8888" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
-
-
-    # 安装 pygments.(如果通过pip安装，会导致llvm找不到)
-    && cd /usr/src/ \
-    && git clone https://github.com/pygments/pygments.git \
-    && cd pygments \
-    && python setup.py install \
+    # && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
+    # && cd llvm/tools \
+    # && git clone http://root.cern.ch/git/cling.git \
+    # && git clone -b cling-patches http://root.cern.ch/git/clang.git \
+    # && cd .. \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
 
 
-    # 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
-    && cd /usr/src/ \
-    && git clone https://github.com/ocaml/ocaml.git \
-    && cd ocaml \
-    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
-    && make \
-    && make install \
-    && rm -rf /usr/src/* \
 
+    # # 安装 llvm
+    # && cd /usr/src \
+    # && git clone http://root.cern.ch/git/llvm.git \
+    # && cd llvm \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=MinSizeRel \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
 
-    && rm -rf /tmp/* \
-    && rm -rf /usr/src/* \
-
-    # 对应的shareVolume_文件夹操作
-    && mkdir -p /shareVolume_demo/config/jupyter \
+    # # 先试试手动安装 llvm
+    # && cd /usr/src \
+    # && git clone http://root.cern.ch/git/llvm.git \
+    # # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # && cd llvm-project \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=MinSizeRel \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -G "Ninja" ../llvm \
+    # # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
+    # # && make \
+    # # && make install \
     
-    && echo "{" \
-            "\n  \"NotebookApp\": {" \
-            "\n    \"nbserver_extensions\": {" \
-            "\n      \"jupyter_nbextensions_configurator\": true" \
-            "\n    }" 	        "\n  }" \
-            "\n}" \
-            > /shareVolume_demo/config/jupyter/jupyter_notebook_config.json \
-    && echo "[program:jupyterLab]" \
-            "\ncommand=jupyter lab --ip=0.0.0.0 --port=8888" \
-            "\nautostart=true" \
-            "\nautorestart=true" \
-            "\npriority=60" \
-            > /shareVolume_demo/config/supervisor/jupyterLab.ini.bak \
-    && echo "[program:jupyterNotebook]" \
-            "\ncommand=jupyter notebook --allow-root --ip=0.0.0.0 --port=8888" \
-            "\nautostart=true" \
-            "\nautorestart=true" \
-            "\npriority=60" \
-            > /shareVolume_demo/config/supervisor/jupyterNotebook.ini \
+
+
+
+    # # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
+    # && cd /usr/src \
+    # && git clone https://github.com/root-project/cling.git \
+    # && cd cling/tools/packaging \
+
+    # # output clipped, log limit 1MiB reached,只能输出到空管道
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && yes yes | ./cpt.py --check-requirements > /dev/null \
+    # # 发现还有个-y参数
+    # # 标准输出进了黑洞，错误输出打印到屏幕
+    # && ./cpt.py --check-requirements 2>&1 >/dev/null \
+    # # && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
+    # && ./cpt.py --last-stable=pkg --create-dev-env Debug --with-workdir=/ec/build 2>&1 >/dev/null \
+
+    && cd / \
+    && rm -rf /tmp/* \
+    # && rm -rf /usr/src/* \
 
     && apt-get clean 
 

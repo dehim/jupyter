@@ -37,6 +37,7 @@ RUN cd / \
 
 
       # -DLLVM_TARGETS_TO_BUILD=X86 \
+      # -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
 
     && cd /usr/src \
     && mkdir build \
@@ -49,7 +50,6 @@ RUN cd / \
       -DLLVM_APPEND_VC_REV=OFF \
       -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
       -DLLVM_BUILD_LLVM_DYLIB=true \
       -DLLVM_LINK_LLVM_DYLIB=true \
       -DLLVM_BUILD_TOOLS=false \

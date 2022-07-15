@@ -35,6 +35,9 @@ RUN cd / \
     && cd clang \
     && git checkout cling-patches \
 
+
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
+
     && cd /usr/src \
     && mkdir build \
     && cd build \
@@ -44,7 +47,7 @@ RUN cd / \
       -DBUILD_SHARED_LIBS=ON \
       -DLLVM_CCACHE_BUILD=OFF \
       -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_TARGETS_TO_BUILD=X86 \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
       -DLLVM_BUILD_LLVM_DYLIB=true \

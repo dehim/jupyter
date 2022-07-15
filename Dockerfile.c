@@ -1,4 +1,4 @@
-FROM dehim/jupyter:3.8.10.12
+FROM dehim/jupyter:3.8.10.13
 # FROM dehim/ubuntu-novnc:3.8.10.1
 # certifi             2019.11.28
 # chardet             3.0.4

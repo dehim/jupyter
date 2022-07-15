@@ -44,7 +44,6 @@ RUN cd /usr/src \
 
     && python -m pip install --upgrade \
          z3 \
-         Pygments \
          joblib \
          Cython \
          ipyparallel \
@@ -67,7 +66,6 @@ RUN cd /usr/src \
          jupyter_nbextensions_configurator \
          pandas \
 
-
     && mkdir -p /shareVolume/config/jupyter/ \
     && ln -s /shareVolume/config/jupyter ~/.jupyter \
     && jupyter notebook --generate-config --allow-root \
@@ -88,9 +86,14 @@ RUN cd /usr/src \
     && echo "c.ServerApp.port = 8888" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
 
 
+    # 安装 pygments.(如果通过pip安装，会导致llvm找不到)
+    && cd /usr/src/ \
+    && git clone https://github.com/pygments/pygments.git
+    && cd pygments \
+    && python setup.py install \
 
 
-    # 安装 ocaml
+    # 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
     && cd /usr/src/ \
     && git clone https://github.com/ocaml/ocaml.git \
     && cd ocaml \
@@ -98,8 +101,6 @@ RUN cd /usr/src \
     && make \
     && make install \
     && rm -rf /usr/src/* \
-
-
 
 
     && rm -rf /tmp/* \

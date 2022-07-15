@@ -53,7 +53,7 @@ RUN cd / \
       -DLLVM_BUILD_EXAMPLES=false \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
-      -G "Ninja" ..\src \
+      -G "Ninja" ../src \
     && cmake --build . \
     && cmake --build . --target install \
 

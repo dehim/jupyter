@@ -18,7 +18,7 @@ RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
  && mkdir /opt/llvm-build \
  && cd /opt/llvm-build \
  && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release /opt/llvm \
- && cmake --build . \
+ && cmake --build . 2>&1 >/dev/null \
  && cmake --build . --target install
 
 # Required packages for python

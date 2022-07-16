@@ -1,0 +1,86 @@
+FROM debian:bullseye-slim
+
+LABEL maintainer="dehim"
+
+#避免安装过程弹出框
+ENV DEBIAN_FRONTEND='noninteractive' 
+
+# Install base packages
+RUN apt update \
+    && apt install --no-install-recommends -y apt-utils make cmake dialog bash git clang python-is-python3 libz-dev \
+            neovim pipenv fonts-firacode nodejs npm libjs-mathjax supervisor \
+
+# Build cling
+RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
+    && cd /opt/llvm/tools \
+    && git clone -b cling-patches http://root.cern/git/clang.git \
+    && git clone http://root.cern/git/cling.git \
+    && mkdir /opt/llvm-build \
+    && cd /opt/llvm-build \
+    && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release /opt/llvm \
+    && cmake --build . \
+    && cmake --build . --target install
+
+
+
+    && python3 -m pip install --upgrade \
+         joblib \
+         Cython \
+         ipyparallel \
+        #  six \
+        #  wheel \
+         pytz \
+         retrying \
+         ta-lib \
+         statsmodels \
+         dataclasses \
+         qdarkstyle \
+         peewee \
+         pymysql \
+         wmi \
+         quickfix \
+         jupyter \
+         jupyterlab \
+         jupyterthemes \
+         jupyter_contrib_nbextensions \
+         jupyter_nbextensions_configurator \
+         pandas \
+
+    && mkdir -p /shareVolume/config/jupyter/ \
+    && ln -s /shareVolume/config/jupyter ~/.jupyter \
+    && jupyter notebook --generate-config --allow-root \
+    # 查看可用jupyter主题 jt -l
+    # 应用主题
+    # 设置密码： jupyter notebook password
+    # 深色
+    # && jt -t chesterish -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
+    # 浅色
+    # && jt -t grade3 -f inconsolata -fs 10 -cellw 90% -ofs 11 -dfs 10 -T \
+    && jupyter contrib nbextension install --user \
+    && mv /shareVolume/config/jupyter /shareVolume_demo/config/ \
+    # 设置默认IP
+    && echo "\n" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.allow_root = True" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.open_browser = False" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.ip = '0.0.0.0'" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py \
+    && echo "c.ServerApp.port = 8888" >> /shareVolume_demo/config/jupyter/jupyter_notebook_config.py 
+
+
+
+
+# Add C++ kernel to jupyter
+RUN cd /opt/llvm/tools/cling/tools/Jupyter/kernel \
+    && pip install -e . \
+    && jupyter-kernelspec install cling-cpp17 \
+    && jupyter-kernelspec install cling-cpp1z \
+    && jupyter-kernelspec install cling-cpp14 \
+    && jupyter-kernelspec install cling-cpp11
+
+
+COPY files /
+
+VOLUME ["/shareVolume"]
+
+# EXPOSE 80 8888
+
+CMD ["supervisord", "-n", "-c",  "/etc/supervisord.conf"]

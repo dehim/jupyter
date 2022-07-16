@@ -1,4 +1,4 @@
- FROM dehim/debian-novnc:1.0.0.1
+FROM dehim/debian-novnc:1.0.0.1
 
 RUN apt update 
 	# && apt install --no-install-recommends -y bash git clang make cmake python-is-python3 libz-dev \
@@ -12,15 +12,15 @@ RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
 	&& mkdir /opt/llvm-build 
 
 
-RUN cd /opt/llvm-build \
-	&& cmake \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-		-DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-		-DCMAKE_INSTALL_PREFIX=/usr/local \
-		-DCMAKE_BUILD_TYPE=Release \
-		/opt/llvm \
-	&& cmake --build . 2>&1 >/dev/null \
-	&& cmake --build . --target install
+# RUN cd /opt/llvm-build \
+# 	&& cmake \
+# 		-DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+# 		-DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+# 		-DCMAKE_INSTALL_PREFIX=/usr/local \
+# 		-DCMAKE_BUILD_TYPE=Release \
+# 		/opt/llvm \
+# 	&& cmake --build . 2>&1 >/dev/null \
+# 	&& cmake --build . --target install
 
 # # Required packages for python
 # ADD rootfs/Pipfile /root/Pipfile

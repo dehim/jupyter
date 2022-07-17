@@ -28,8 +28,18 @@ RUN cd / \
     && apt-get install -y \
     #7 3.448 -- Could NOT find Z3: Found unsuitable version "0.0.0", but required is at least "4.7.1" (found Z3_LIBRARIES-NOTFOUND)
                           libz3-dev \
-    #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)(没用)
+    #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)
                           libllvm-11-ocaml-dev \
+    #7 64.33 -- Could NOT find Python module pygments
+                          python3-pygments \
+    #7 55.94 -- Looking for malloc/malloc.h - not found
+                          libdmalloc-dev \
+    #7 57.63 -- Looking for CrashReporterClient.h - not found
+                          libkf5crash-dev \
+    #7 58.87 -- Looking for pthread_create in pthreads - not found
+                          libevent-pthreads-2.1-7 \
+    #7 58.87 -- Looking for pthread_create in pthreads - not found
+                          libpfm4-dev \
                           # libllvm-11-ocaml-dev libllvm-12-ocaml-dev \
                           # #7 484.8 -- Looking for valgrind/valgrind.h - not found(有用)
                           # valgrind \

@@ -1,62 +1,166 @@
-FROM dehim/jupyter:3.9.2.0
+FROM dehim/jupyter:3.8.10.15
+# FROM dehim/ubuntu-lede:1.1.10
+# FROM dehim/ubuntu-novnc:3.8.10.1
+# certifi             2019.11.28
+# chardet             3.0.4
+# dbus-python         1.2.16
+# distro              1.4.0
+# distro-info         0.23ubuntu1
+# idna                2.8
+# numpy               1.23.1
+# pip                 22.1.2
+# PyGObject           3.36.0
+# python-apt          2.0.0+ubuntu0.20.4.7
+# requests            2.22.0
+# requests-unixsocket 0.2.0
+# setuptools          63.1.0
+# six                 1.16.0
+# ssh-import-id       5.10
+# supervisor          4.1.0
+# unattended-upgrades 0.1
+# urllib3             1.25.8
+# websockify          0.10.0
+# wheel               0.37.1
 
-# RUN apt update 
-# 	# && apt install --no-install-recommends -y bash git clang make cmake python-is-python3 libz-dev \
-# 	# && apt install --no-install-recommends -y neovim pipenv fonts-firacode nodejs npm libjs-mathjax
 
-# # Build cling
-# RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
-# 	&& cd /opt/llvm/tools \
-# 	&& git clone -b cling-patches http://root.cern/git/clang.git \
-# 	&& git clone http://root.cern/git/cling.git \
-# 	&& mkdir /opt/llvm-build 
+RUN cd / \
+    && apt-get update \
+    && apt-get install -y \
+                          #7 484.8 -- Looking for valgrind/valgrind.h - not found
+                          valgrind \
+                          #7 485.0 -- Looking for mach/mach.h - not found
+                          mach \
+                          #7 485.0 -- Looking for histedit.h - not found
+                          libedit-dev \
+
+    && cd /usr/src \
+    && git clone -b cling-patches http://root.cern/git/llvm.git llvm_source \
+    && cd llvm_source/tools \
+    && git clone http://root.cern/git/cling.git \
+    && git clone -b cling-patches http://root.cern/git/clang.git \
+
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
+      # -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+
+    && cd /usr/src \
+    && mkdir build \
+    && cd build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DLLVM_BUILD_LLVM_DYLIB=true \
+      -DLLVM_LINK_LLVM_DYLIB=true \
+      -DLLVM_BUILD_TOOLS=false \
+      -DLLVM_BUILD_EXAMPLES=false \
+      -DLLVM_BUILD_TESTS=false \
+      -DLLVM_BUILD_DOCS=false \
+      -G "Ninja" ../llvm_source \
+    # && cmake --build . 2>&1 >/dev/null \
+    # && cmake --build . --target install \
+
+    # && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
+    # && cd llvm/tools \
+    # && git clone http://root.cern.ch/git/cling.git \
+    # && git clone -b cling-patches http://root.cern.ch/git/clang.git \
+    # && cd .. \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
 
 
-RUN cd /opt/llvm-build \
-	&& cmake \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-		-DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-		-DCMAKE_INSTALL_PREFIX=/usr/local \
-		-DCMAKE_BUILD_TYPE=Release \
-		/opt/llvm \
-	&& cmake --build . 2>&1 >/dev/null \
-	&& cmake --build . --target install
 
-# # Required packages for python
-# ADD rootfs/Pipfile /root/Pipfile
-# # Install packages
-# RUN cd /root \
-#  && pipenv lock -r > requirements.txt \
-#  && pip install -r requirements.txt
+    # # 安装 llvm
+    # && cd /usr/src \
+    # && git clone http://root.cern.ch/git/llvm.git \
+    # && cd llvm \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=MinSizeRel \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
 
-# # Add C++ kernel to jupyter
-# RUN cd /opt/llvm/tools/cling/tools/Jupyter/kernel \
-#  && pip install -e . \
-#  && jupyter-kernelspec install cling-cpp17 \
-#  && jupyter-kernelspec install cling-cpp1z \
-#  && jupyter-kernelspec install cling-cpp14 \
-#  && jupyter-kernelspec install cling-cpp11
+    # # 先试试手动安装 llvm
+    # && cd /usr/src \
+    # && git clone http://root.cern.ch/git/llvm.git \
+    # # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # && cd llvm-project \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=MinSizeRel \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+    #   -G "Ninja" ../llvm \
+    # # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
+    # # && make \
+    # # && make install \
+    
 
-# # Create user
-# RUN useradd -m -d ${USER_HOME}/ -s /bin/bash ${USER}
 
-# USER ${USER}
-# WORKDIR ${USER_HOME}
-# SHELL ["/bin/bash", "-c"]
 
-# # Jupyter notebook settings
-# # ADD --chown=${USER}:${USER} rootfs/jupyter_notebook_config.py ${USER_HOME}/.jupyter/jupyter_notebook_config.py
-# # Server key
-# # ADD --chown=${USER}:${USER} rootfs/${SSL_KEY_NAME}.pem ${USER_HOME}/.jupyter/${SSL_KEY_NAME}.pem
-# # ADD --chown=${USER}:${USER} rootfs/${SSL_KEY_NAME}.key ${USER_HOME}/.jupyter/${SSL_KEY_NAME}.key
-# # Update configuration
-# # RUN sed -i "s/##NB_PASSWORD##/$(python -c 'import sys; from IPython.lib import passwd; print(passwd(sys.argv[1]))' ${NB_PASSWORD})/g" ${USER_HOME}/.jupyter/jupyter_notebook_config.py
-# # RUN sed -i -r "s|##USER_HOME##|${USER_HOME}|g" ${USER_HOME}/.jupyter/jupyter_notebook_config.py
-# # RUN sed -i "s/##SSL_KEY_NAME##/${SSL_KEY_NAME}/g" ${USER_HOME}/.jupyter/jupyter_notebook_config.py
+    # # 参考：https://www.bbsmax.com/A/KE5Q8WVyJL/
+    # && cd /usr/src \
+    # && git clone https://github.com/root-project/cling.git \
+    # && cd cling/tools/packaging \
 
-# USER ${USER}
-# WORKDIR ${USER_HOME}
-# SHELL ["/bin/bash", "-c"]
-# EXPOSE 8080
-# ENTRYPOINT ["bash", "-c"]
-# CMD ["jupyter lab"]
+    # # output clipped, log limit 1MiB reached,只能输出到空管道
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && (echo 'yes' |./cpt.py --check-requirements) > /dev/null \
+    # # && yes yes | ./cpt.py --check-requirements > /dev/null \
+    # # 发现还有个-y参数
+    # # 标准输出进了黑洞，错误输出打印到屏幕
+    # && ./cpt.py --check-requirements 2>&1 >/dev/null \
+    # # && ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/ 2>&1 >/dev/null \
+    # && ./cpt.py --last-stable=pkg --create-dev-env Debug --with-workdir=/ec/build 2>&1 >/dev/null \
+
+    && cd / \
+    && rm -rf /tmp/* \
+    # && rm -rf /usr/src/* \
+
+    && apt-get clean 
+

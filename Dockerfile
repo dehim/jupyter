@@ -25,9 +25,11 @@ FROM dehim/jupyter:3.8.10.28
 
 RUN cd / \
     && apt-get update \
-    # && apt-get install -y \
-                          #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)(没用)
-                          # libgmp-ocaml-dev \
+    && apt-get install -y \
+    #7 3.448 -- Could NOT find Z3: Found unsuitable version "0.0.0", but required is at least "4.7.1" (found Z3_LIBRARIES-NOTFOUND)
+                          libz3-dev \
+    #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)(没用)
+                          libllvm-11-ocaml-dev libllvm-12-ocaml-dev \
                           # #7 484.8 -- Looking for valgrind/valgrind.h - not found(有用)
                           # valgrind \
     #                       #7 485.0 -- Looking for mach/mach.h - not found(没用)

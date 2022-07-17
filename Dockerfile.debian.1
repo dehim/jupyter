@@ -1,26 +1,26 @@
-FROM dehim/jupyter:3.9.2.0
+FROM dehim/debian-novnc:1.0.0.1
 
-# RUN apt update 
-# 	# && apt install --no-install-recommends -y bash git clang make cmake python-is-python3 libz-dev \
-# 	# && apt install --no-install-recommends -y neovim pipenv fonts-firacode nodejs npm libjs-mathjax
+RUN apt update 
+	# && apt install --no-install-recommends -y bash git clang make cmake python-is-python3 libz-dev \
+	# && apt install --no-install-recommends -y neovim pipenv fonts-firacode nodejs npm libjs-mathjax
 
-# # Build cling
-# RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
-# 	&& cd /opt/llvm/tools \
-# 	&& git clone -b cling-patches http://root.cern/git/clang.git \
-# 	&& git clone http://root.cern/git/cling.git \
-# 	&& mkdir /opt/llvm-build 
+# Build cling
+RUN git clone -b cling-patches http://root.cern/git/llvm.git /opt/llvm \
+	&& cd /opt/llvm/tools \
+	&& git clone -b cling-patches http://root.cern/git/clang.git \
+	&& git clone http://root.cern/git/cling.git \
+	&& mkdir /opt/llvm-build 
 
 
-RUN cd /opt/llvm-build \
-	&& cmake \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-		-DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-		-DCMAKE_INSTALL_PREFIX=/usr/local \
-		-DCMAKE_BUILD_TYPE=Release \
-		/opt/llvm \
-	&& cmake --build . 2>&1 >/dev/null \
-	&& cmake --build . --target install
+# RUN cd /opt/llvm-build \
+# 	&& cmake \
+# 		-DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+# 		-DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+# 		-DCMAKE_INSTALL_PREFIX=/usr/local \
+# 		-DCMAKE_BUILD_TYPE=Release \
+# 		/opt/llvm \
+# 	&& cmake --build . 2>&1 >/dev/null \
+# 	&& cmake --build . --target install
 
 # # Required packages for python
 # ADD rootfs/Pipfile /root/Pipfile

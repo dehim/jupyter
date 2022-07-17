@@ -67,7 +67,7 @@ RUN cd / \
     && cd build \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX=/usr \
+      # -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
       -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_LIBDIR_SUFFIX=64 \

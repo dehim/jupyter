@@ -26,29 +26,31 @@ FROM dehim/jupyter:3.8.10.28
 RUN cd / \
     && apt-get update \
     && apt-get install -y \
+    #7 172.1 -- Could NOT find Python module yaml
+                          python3-yaml \
     #7 3.448 -- Could NOT find Z3: Found unsuitable version "0.0.0", but required is at least "4.7.1" (found Z3_LIBRARIES-NOTFOUND)（有用）
                           libz3-dev \
     #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)（有用）
                           libllvm-11-ocaml-dev \
     #7 64.33 -- Could NOT find Python module pygments（无用:python3-pygments）
-                          # python3-pygments \
+                          python3-pygments \
     #7 55.94 -- Looking for malloc/malloc.h - not found (无用:libdmalloc-dev)
                           # libdmalloc-dev \
-    #7 57.63 -- Looking for CrashReporterClient.h - not found （无用:libkf5crash-dev）
-                          libkf5crash5 \
-    #7 58.87 -- Looking for pthread_create in pthreads - not found（无用：libevent-pthreads-2.1-7）
-                          libblis64-3-pthread \
+    #7 57.63 -- Looking for CrashReporterClient.h - not found （无用:libkf5crash-dev,libkf5crash5）
+                          # libkf5crash5 \
+    #7 58.87 -- Looking for pthread_create in pthreads - not found（无用：libevent-pthreads-2.1-7,libblis64-3-pthread）
+                          # libblis64-3-pthread \
     #7 58.60 -- Looking for pfm_initialize in pfm - not found （有用）
                           libpfm4-dev \
-    #7 79.31 -- Looking for setupterm in terminfo - not found
-                          libghc-wl-pprint-terminfo-dev \
-    #7 79.53 -- Looking for xar_open in xar - not found
-                          python3-xarray \
-    #7 79.57 -- Looking for arc4random - not found
-                          libbsd-arc4random-perl \
+    #7 79.31 -- Looking for setupterm in terminfo - not found(无用：libghc-wl-pprint-terminfo-dev)
+                          # libghc-wl-pprint-terminfo-dev \
+    #7 79.53 -- Looking for xar_open in xar - not found（无用：python3-xarray）
+                          # python3-xarray \
+    #7 79.57 -- Looking for arc4random - not found（无用：libbsd-arc4random-perl ）
+                          # libbsd-arc4random-perl \
     #7 80.67 -- Looking for malloc_zone_statistics - not found
-    #7 80.56 -- Looking for mallctl - not found
-                          libvmmalloc-dev \
+    #7 80.56 -- Looking for mallctl - not found（无用：libvmmalloc-dev）
+                          # libvmmalloc-dev \
                           # libllvm-11-ocaml-dev libllvm-12-ocaml-dev \
                           # #7 484.8 -- Looking for valgrind/valgrind.h - not found(有用)
                           # valgrind \

@@ -23,8 +23,6 @@ RUN cd / \
     && cd /usr/src \
     && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project/ \
-    && git clone http://root.cern/git/cling.git tools/cling \
-    && mv clang tools/ \
     && mkdir _build \
     && cd _build \
     && cmake \
@@ -161,7 +159,7 @@ RUN cd / \
 
     && cd / \
     && rm -rf /tmp/* \
-    # && rm -rf /usr/src/* \
+    && rm -rf /usr/src/* \
 
     && apt-get clean 
 

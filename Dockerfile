@@ -104,8 +104,8 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_LIBDIR_SUFFIX=64 \
       -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_BUILD_LLVM_DYLIB=true \
-      -DLLVM_LINK_LLVM_DYLIB=true \
+      # -DLLVM_BUILD_LLVM_DYLIB=true \
+      # -DLLVM_LINK_LLVM_DYLIB=true \
       -DLLVM_BUILD_DOCS=false \
       # -G Ninja \
       ../llvm_source \

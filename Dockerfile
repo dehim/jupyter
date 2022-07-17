@@ -44,7 +44,8 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD=X86 \
       # -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
       
-      # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
+
       
       # -DLLVM_BUILD_EXAMPLES=false \(默认就是false)
       
@@ -66,11 +67,11 @@ RUN cd / \
     && cd build \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_LIBDIR_SUFFIX=64 \
       -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_TARGETS_TO_BUILD=X86 \
-      -DCMAKE_INSTALL_PREFIX=/usr \
       -DLLVM_BUILD_LLVM_DYLIB=true \
       -DLLVM_LINK_LLVM_DYLIB=true \
       -DLLVM_BUILD_DOCS=false \

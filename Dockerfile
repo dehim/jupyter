@@ -25,9 +25,9 @@ FROM dehim/jupyter:3.8.10.28
 
 RUN cd / \
     && apt-get update \
-    && apt-get install -y \
-                          #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)
-                          libgmp-ocaml-dev \
+    # && apt-get install -y \
+                          #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)(没用)
+                          # libgmp-ocaml-dev \
                           # #7 484.8 -- Looking for valgrind/valgrind.h - not found(有用)
                           # valgrind \
     #                       #7 485.0 -- Looking for mach/mach.h - not found(没用)
@@ -43,6 +43,23 @@ RUN cd / \
 
       # -DLLVM_TARGETS_TO_BUILD=X86 \
       # -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+      
+      # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      
+      # -DLLVM_BUILD_EXAMPLES=false \(默认就是false)
+      
+      # -DBUILD_SHARED_LIBS=ON \(BUILD_SHARED_LIBS is only recommended for use by LLVM developers)
+      
+      # -DLLVM_BUILD_TOOLS=false \(默认就是false)
+      
+      # -DLLVM_BUILD_TESTS=false \(默认就是false)
+      
+      # -DLLVM_CCACHE_BUILD=OFF \(默认就是false)
+
+    # && python -m pip install --upgrade \
+    #      pygments \
+        #  six \
+
 
     && cd /usr/src \
     && mkdir build \
@@ -50,18 +67,16 @@ RUN cd / \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_LIBDIR_SUFFIX=64 \
       -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_TARGETS_TO_BUILD=X86 \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DLLVM_BUILD_LLVM_DYLIB=true \
       -DLLVM_LINK_LLVM_DYLIB=true \
-      -DLLVM_BUILD_TOOLS=false \
-      -DLLVM_BUILD_EXAMPLES=false \
-      -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
-      -G "Ninja" ../llvm_source \
+      -DLLVM_USE_LINKER=lld \
+      -G Ninja \
+      ../llvm_source \
     # && cmake --build . 2>&1 >/dev/null \
     # && cmake --build . --target install \
 

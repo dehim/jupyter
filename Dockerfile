@@ -42,24 +42,24 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD=X86 \
       # -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
 
-    && cd /usr/src \
-    && mkdir build \
-    && cd build \
-    && cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
-      -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DLLVM_BUILD_LLVM_DYLIB=true \
-      -DLLVM_LINK_LLVM_DYLIB=true \
-      -DLLVM_BUILD_TOOLS=false \
-      -DLLVM_BUILD_EXAMPLES=false \
-      -DLLVM_BUILD_TESTS=false \
-      -DLLVM_BUILD_DOCS=false \
-      -G "Ninja" ../llvm_source \
+    # && cd /usr/src \
+    # && mkdir build \
+    # && cd build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DLLVM_BUILD_LLVM_DYLIB=true \
+    #   -DLLVM_LINK_LLVM_DYLIB=true \
+    #   -DLLVM_BUILD_TOOLS=false \
+    #   -DLLVM_BUILD_EXAMPLES=false \
+    #   -DLLVM_BUILD_TESTS=false \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -G "Ninja" ../llvm_source \
     # && cmake --build . 2>&1 >/dev/null \
     # && cmake --build . --target install \
 

@@ -25,13 +25,15 @@ FROM dehim/jupyter:3.8.10.28
 
 RUN cd / \
     && apt-get update \
-    # && apt-get install -y \
-    #                       #7 484.8 -- Looking for valgrind/valgrind.h - not found
-    #                       valgrind \
-    #                       #7 485.0 -- Looking for mach/mach.h - not found
+    && apt-get install -y \
+                          #7 9.967 -- Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH)
+                          libgmp-ocaml-dev \
+                          #7 484.8 -- Looking for valgrind/valgrind.h - not found(有用)
+                          valgrind \
+    #                       #7 485.0 -- Looking for mach/mach.h - not found(没用)
     #                       # mach \
-    #                       #7 485.0 -- Looking for histedit.h - not found
-    #                       libedit-dev \
+                          #7 485.0 -- Looking for histedit.h - not found(有用)
+                          libedit-dev \
 
     # && cd /usr/src \
     # && git clone -b cling-patches http://root.cern/git/llvm.git llvm_source \

@@ -26,8 +26,8 @@ FROM dehim/jupyter:3.8.10.28
 RUN cd / \
     && apt-get update \
     && apt-get install -y \
-    #7 51.26 -- Looking for mach/mach.h - not found
-                          python3-macholib \
+    #7 51.26 -- Looking for mach/mach.h - not found(无用)
+                          # python3-macholib \
     #7 172.1 -- Could NOT find Python module yaml(无用)
                           # python3-yaml \
     #7 3.448 -- Could NOT find Z3: Found unsuitable version "0.0.0", but required is at least "4.7.1" (found Z3_LIBRARIES-NOTFOUND)（有用）
@@ -107,7 +107,7 @@ RUN cd / \
       -DLLVM_BUILD_LLVM_DYLIB=true \
       -DLLVM_LINK_LLVM_DYLIB=true \
       -DLLVM_BUILD_DOCS=false \
-      -G Ninja \
+      # -G Ninja \
       ../llvm_source \
     # && cmake --build . 2>&1 >/dev/null \
     # && cmake --build . --target install \

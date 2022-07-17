@@ -74,7 +74,6 @@ RUN cd / \
       -DLLVM_BUILD_LLVM_DYLIB=true \
       -DLLVM_LINK_LLVM_DYLIB=true \
       -DLLVM_BUILD_DOCS=false \
-      -DLLVM_USE_LINKER=lld \
       -G Ninja \
       ../llvm_source \
     # && cmake --build . 2>&1 >/dev/null \

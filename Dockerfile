@@ -33,21 +33,21 @@ RUN cd / \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DLLVM_TARGETS_TO_BUILD=X86 \
+      -DLLVM_TARGETS_TO_BUILD=x86_64 \
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
       -DBUILD_SHARED_LIBS=ON \
       -DLLVM_CCACHE_BUILD=OFF \
       -DLLVM_APPEND_VC_REV=OFF \
       -DLLVM_BUILD_DOCS=false \
       -DLLVM_ENABLE_PROJECTS=clang \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_ENABLE_BINDINGS=OFF \
       -G "Ninja" ../llvm \
     # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
     && cmake --build . \
     && cmake --build . --target install \
     
-
 
 
 

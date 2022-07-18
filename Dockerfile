@@ -11,8 +11,14 @@ RUN cd / \
     # && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
     && apt-get update \
     && apt-get install -y z3 libz3-dev libpfm4-dev valgrind libedit-dev \
-    # libllvm-14-ocaml-dev libllvm14 
+    #     libllvm-14-ocaml-dev libllvm14 \
    
+
+   # 原始安装
+    && cd /usr/src \
+    && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+
+
     #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
     && cd /usr/include \
     && mkdir -p /usr/include/malloc \
@@ -25,6 +31,7 @@ RUN cd / \
      && unzip ninja-linux.zip -d /usr/bin/ \
 
 
+# 覆盖安装
     # 先试试手动安装 llvm
     && cd /usr/src \
     && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
@@ -41,7 +48,8 @@ RUN cd / \
       -DLLVM_APPEND_VC_REV=OFF \
       -DLLVM_BUILD_DOCS=false \
       -DLLVM_ENABLE_PROJECTS=clang \
-      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
+      # -DCMAKE_INSTALL_PREFIX=/usr \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_ENABLE_BINDINGS=OFF \
       -G "Ninja" ../llvm \
@@ -50,6 +58,9 @@ RUN cd / \
     && cmake --build . --target install \
     
 
+
+    && echo 'export PATH="$PATH:/usr/lib/llvm-14/bin/"' >> ~/.bashrc \
+    && source /root/.bashrc \
 
 
     # && cd /usr/src \

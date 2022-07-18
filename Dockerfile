@@ -4,49 +4,55 @@ FROM dehim/ubuntu-novnc:3.8.10.5
 
 
 RUN cd / \
-    && echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
-	        "\ndeb-src http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
-	        "\n" \
-	        > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
-    && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
+    # && echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
+	  #       "\ndeb-src http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
+	  #       "\n" \
+	  #       > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
+    # && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
     && apt-get update \
-    && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
+    # && apt-get install -y z3 libz3-dev libpfm4-dev valgrind libedit-dev \
+    # libllvm-14-ocaml-dev libllvm14 \
+
+
+    && cd /usr/src \
+    && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+    && echo "export PATH=\"/usr/lib/llvm-14/bin/:\$PATH\"" >> /etc/profile \
    
     #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
-    && cd /usr/include \
-    && mkdir -p /usr/include/malloc \
-    && ln -s /usr/include/malloc.h malloc/malloc.h \
+    # && cd /usr/include \
+    # && mkdir -p /usr/include/malloc \
+    # && ln -s /usr/include/malloc.h malloc/malloc.h \
 
 
 
 
-     && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
-     && unzip ninja-linux.zip -d /usr/bin/ \
+    #  && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
+    #  && unzip ninja-linux.zip -d /usr/bin/ \
 
 
-    # 先试试手动安装 llvm
-    && cd /usr/src \
-    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    && cd llvm-project/ \
-    && mkdir _build \
-    && cd _build \
-    && cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DLLVM_TARGETS_TO_BUILD=x86_64 \
-      # -DLLVM_TARGETS_TO_BUILD=X86 \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
-      -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_BUILD_DOCS=false \
-      -DLLVM_ENABLE_PROJECTS=clang \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-      -DLLVM_ENABLE_BINDINGS=OFF \
-      -G "Ninja" ../llvm \
-    # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
-    && cmake --build . \
-    && cmake --build . --target install \
+    # # 先试试手动安装 llvm
+    # && cd /usr/src \
+    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # && cd llvm-project/ \
+    # && mkdir _build \
+    # && cd _build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DLLVM_TARGETS_TO_BUILD=x86_64 \
+    #   # -DLLVM_TARGETS_TO_BUILD=X86 \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+    #   -DLLVM_ENABLE_BINDINGS=OFF \
+    #   -G "Ninja" ../llvm \
+    # # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
     
 
 

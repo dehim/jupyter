@@ -1,4 +1,4 @@
-FROM gcc:12.1-bullseye
+FROM dehim/jupyter:12.1.0
 
 
 
@@ -20,38 +20,38 @@ RUN cd / \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \
-    # && cd /usr/src \
+    && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
 
 
-    #  && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
-    #  && unzip ninja-linux.zip -d /usr/bin/ \
+     && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
+     && unzip ninja-linux.zip -d /usr/bin/ \
 
 
     # # 先试试手动安装 llvm
     && cd /usr/src \
-    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project/ \
-    # && mkdir _build \
-    # && cd _build \
-    # && cmake \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   # -DLLVM_TARGETS_TO_BUILD=X86 \
-    #   -DBUILD_SHARED_LIBS=ON \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   # -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
-    # # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
-    # && cmake --build . \
-    # && cmake --build . --target install \
+    && mkdir _build \
+    && cd _build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      # -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
+    # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
+    && cmake --build . \
+    && cmake --build . --target install \
     
 
 

@@ -13,17 +13,21 @@ RUN cd / \
     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
     # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
-    # && cd /usr/include \
-    # && mkdir -p /usr/include/malloc \
-    # && ln -s /usr/include/malloc.h malloc/malloc.h \
+    && cd /usr/include \
+    && mkdir -p /usr/include/malloc \
+    && ln -s /usr/include/malloc.h malloc/malloc.h \
 
     && apt update \
-    && apt install --no-install-recommends -y cmake \
+    && apt install --no-install-recommends -y cmake valgrind \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \
     && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+
+
+      # -DLLVM_TARGETS_TO_BUILD=X86 \
+      # -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
 
 
 
@@ -40,23 +44,21 @@ RUN cd / \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      # -DLLVM_TARGETS_TO_BUILD=X86 \
       -DBUILD_SHARED_LIBS=ON \
       -DLLVM_CCACHE_BUILD=OFF \
       -DLLVM_APPEND_VC_REV=OFF \
       -DLLVM_BUILD_DOCS=false \
       -DLLVM_ENABLE_PROJECTS=clang \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      # -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
       -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
       -DLLVM_ENABLE_BINDINGS=OFF \
       -G "Ninja" ../llvm \
-    # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
-    && cmake --build . \
-    && cmake --build . --target install \
+    # && cmake --build . \
+    # && cmake --build . --target install \
     
 
 
+    # && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu ../llvm \
 
 
     # && cd /usr/src \

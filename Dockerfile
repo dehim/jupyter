@@ -172,6 +172,6 @@ RUN cd / \
 
     && cd / \
     && rm -rf /tmp/* \
-    && rm -rf /usr/src/* \
+    # && rm -rf /usr/src/* \
 
     && apt-get clean 

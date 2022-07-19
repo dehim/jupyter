@@ -5,7 +5,7 @@ FROM dehim/jupyter:12.1.0
 
 
 RUN cd / \
-    && echo -e "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\n" \
 	        > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
@@ -20,7 +20,7 @@ RUN cd / \
 
     && apt update \
     && apt install --no-install-recommends -y cmake valgrind python-is-python3 libedit-dev \
-        libllvm-14-ocaml-dev libllvm14 libpfm4-dev  \
+        libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

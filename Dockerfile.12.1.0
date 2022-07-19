@@ -1,4 +1,4 @@
-FROM gcc:11-bullseye
+FROM dehim/jupyter:12.1.0
 
 
 
@@ -8,7 +8,7 @@ RUN cd / \
     && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\n" \
-	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye-14.list \
+	        > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
     && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
     && apt update \
     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
@@ -45,21 +45,21 @@ RUN cd / \
     # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project/ \
     && mkdir _build \
-    # && cd _build \
-    # && cmake \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   -DBUILD_SHARED_LIBS=ON \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
-    # # && cmake --build . \
-    # # && cmake --build . --target install \
+    && cd _build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
     
 
 

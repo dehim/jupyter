@@ -1,4 +1,4 @@
-FROM dehim/jupyter:11.0.0
+FROM dehim/jupyter:11.0.1
 
 
 

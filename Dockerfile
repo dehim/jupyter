@@ -58,9 +58,9 @@ RUN cd / \
     && cmake --build . --target install \
     
 
-
-    && echo 'export PATH="$PATH:/usr/lib/llvm-14/bin/"' >> ~/.bashrc \
-    && source /root/.bashrc \
+    # 全部通过软连接实现
+    # && echo 'export PATH="$PATH:/usr/lib/llvm-14/bin/"' >> ~/.bashrc \
+    # && /bin/bash -c "source ~/.bashrc" \
 
 
     # && cd /usr/src \

@@ -3,13 +3,14 @@ FROM dehim/jupyter:12.1.0
 
 
 
+
 RUN cd / \
-    # && echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
-	  #       "\ndeb-src http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main" \
-	  #       "\n" \
-	  #       > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
-    # && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
-    # && apt-get update \
+    && echo -e "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	        "\n" \
+	        > /etc/apt/sources.list.d/llvm-toolchain-focal-14.list \
+    && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
+    && apt update \
     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
     # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
@@ -18,7 +19,8 @@ RUN cd / \
     && ln -s /usr/include/malloc.h malloc/malloc.h \
 
     && apt update \
-    && apt install --no-install-recommends -y cmake valgrind \
+    && apt install --no-install-recommends -y cmake valgrind python-is-python3 libedit-dev \
+        libllvm-14-ocaml-dev libllvm14 libpfm4-dev  \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \
@@ -33,6 +35,9 @@ RUN cd / \
 
      && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
      && unzip ninja-linux.zip -d /usr/bin/ \
+
+     
+      # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
     # # 先试试手动安装 llvm

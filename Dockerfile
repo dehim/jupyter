@@ -17,6 +17,8 @@ RUN cd / \
     # && mkdir -p /usr/include/malloc \
     # && ln -s /usr/include/malloc.h malloc/malloc.h \
 
+    && apt update \
+    && apt install --no-install-recommends -y cmake \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

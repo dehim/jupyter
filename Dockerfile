@@ -18,10 +18,10 @@ RUN cd / \
     # && ln -s /usr/include/malloc.h malloc/malloc.h \
 
 
-    && mkdir -p /usr/src \
-    && chmod -R 777 /usr/src/ \
-    && cd /usr/src \
-    && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+    # && mkdir -p /usr/src \
+    # && chmod -R 777 /usr/src/ \
+    # && cd /usr/src \
+    # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
 
 
@@ -30,9 +30,9 @@ RUN cd / \
 
 
     # # 先试试手动安装 llvm
-    # && cd /usr/src \
-    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    # && cd llvm-project/ \
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    && cd llvm-project/ \
     # && mkdir _build \
     # && cd _build \
     # && cmake \

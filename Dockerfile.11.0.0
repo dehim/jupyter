@@ -30,7 +30,7 @@ RUN cd / \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \
-    # && cd /usr/src \
+    && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
 

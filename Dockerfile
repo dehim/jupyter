@@ -1,4 +1,4 @@
-FROM dehim/jupyter:11.0.3
+FROM ocaml/opam:ubuntu-22.04-ocaml-5.1
 
 
 
@@ -47,14 +47,14 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
-    # # 先试试手动安装 llvm
-    # && cd /usr/src \
-    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    # && cd llvm-project/ \
-    # && mkdir _build \
+    # 先试试手动安装 llvm
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    && cd llvm-project/ \
 
-    
-    && cd /usr/src/llvm-project/_build \
+
+    # && mkdir _build \
+    # && cd /usr/src/llvm-project/_build \
     # && cmake \
     #   -DCMAKE_BUILD_TYPE=Release \
     #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
@@ -67,8 +67,8 @@ RUN cd / \
     #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
     #   -DLLVM_ENABLE_BINDINGS=OFF \
     #   -G "Ninja" ../llvm \
-    && cmake --build . \
-    && cmake --build . --target install \
+    # && cmake --build . \
+    # && cmake --build . --target install \
     
 
 

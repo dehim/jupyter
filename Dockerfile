@@ -25,7 +25,7 @@ RUN cd / \
     # && ln -s /usr/include/malloc.h malloc/malloc.h \
 
     && apt update \
-    && apt install --no-install-recommends -y z3 libz3-dev libllvm-14-ocaml-dev libpfm4-dev  valgrind  libedit-dev \
+    && apt install --no-install-recommends -y z3 libz3-dev libfindlib-ocaml ocaml-findlib libpfm4-dev valgrind libedit-dev \
     # cmake valgrind python-is-python3 libedit-dev \
     #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 

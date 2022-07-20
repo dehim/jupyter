@@ -5,6 +5,7 @@ FROM dehim/jupyter:11.0.0
 
 
 RUN cd / \
+    && cd /usr/src \
     && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\n" \
@@ -27,7 +28,9 @@ RUN cd / \
     && apt update \
     && apt install --no-install-recommends -y apt-utils cmake \
     && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
-    && apt install --no-install-recommends -y libfindlib-ocaml ocaml-findlib libllvm-14-ocaml-dev \
+    && apt install --no-install-recommends -y libfindlib-ocaml ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
+        libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man \
+        ocaml-nox ocaml-doc \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

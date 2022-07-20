@@ -5,8 +5,8 @@ FROM dehim/jupyter:11.0.0
 
 
 RUN cd / \
-    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye main" \
-	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye main" \
+    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	        "\n" \
 	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye.list \
     && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \

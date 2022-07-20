@@ -38,6 +38,15 @@ RUN cd / \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
 
+
+# install PIP begin
+    && cd /usr/src/ \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python get-pip.py \
+    && rm get-pip.py \
+
+
+
       # -DLLVM_TARGETS_TO_BUILD=X86 \
       # -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14/ \
 

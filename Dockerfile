@@ -1,10 +1,12 @@
-FROM dehim/jupyter:5.1.0
+FROM ocaml/opam:ubuntu-22.04-ocaml-5.1
 
 
 
 
 
-RUN cd ~/ \
+RUN cd / \
+    && sudo -i \
+
     # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\n" \
@@ -16,8 +18,8 @@ RUN cd ~/ \
     # && unzip ninja-linux.zip -d /usr/bin/ \
 
 
-    && apt update \
-    && apt-get install -y python-is-python3 \
+    # && apt update \
+    # && apt-get install -y python-is-python3 \
     
     # z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
@@ -50,6 +52,7 @@ RUN cd ~/ \
 
 
     # 先试试手动安装 llvm
+    # && cd /usr/src \
     && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project/ \
 
@@ -190,7 +193,7 @@ RUN cd ~/ \
     # && ./cpt.py --last-stable=pkg --create-dev-env Debug --with-workdir=/ec/build 2>&1 >/dev/null \
 
     && cd / \
-    && rm -rf /tmp/* 
+    && rm -rf /tmp/* \
     # && rm -rf /usr/src/* \
 
-    # && apt-get clean 
+    && apt-get clean 

@@ -5,6 +5,7 @@ FROM ocaml/opam:ubuntu-22.04-ocaml-5.1
 
 
 RUN cd / \
+    && sudo -i \
     # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\n" \

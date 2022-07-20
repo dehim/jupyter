@@ -29,7 +29,7 @@ RUN cd / \
     #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
     && apt update \
-    && apt install --no-install-recommends -y libopam-file-format-ocaml-dev \
+    && apt install --no-install-recommends -y libopam-file-format-ocaml-dev opam-installer opam-doc opam \
     #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
 

@@ -4,8 +4,7 @@ FROM ocaml/opam:ubuntu-22.04-ocaml-5.1
 
 
 
-RUN cd / \
-    && sudo -i \
+RUN cd ~/ \
     # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\n" \
@@ -49,7 +48,6 @@ RUN cd / \
 
 
     # 先试试手动安装 llvm
-    && cd /usr/src \
     && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     && cd llvm-project/ \
 

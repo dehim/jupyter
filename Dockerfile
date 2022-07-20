@@ -29,7 +29,7 @@ RUN cd / \
     && apt install --no-install-recommends -y apt-utils cmake \
     && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
     && apt install --no-install-recommends -y libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
-        libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man  ocaml-nox \
+        libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man ocaml-nox ocaml-base-nox \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

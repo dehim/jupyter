@@ -1,12 +1,10 @@
-FROM ocaml/opam:ubuntu-22.04-ocaml-5.1
+FROM dehim/jupyter:11.0.2
 
 
 
 
 
 RUN cd / \
-    && sudo -i \
-
     # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\n" \
@@ -18,10 +16,8 @@ RUN cd / \
     # && unzip ninja-linux.zip -d /usr/bin/ \
 
 
-    # && apt update \
-    # && apt-get install -y python-is-python3 \
-    
-    # z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
+    # # && apt update \
+    # # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
     # # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
     # && cd /usr/include \
@@ -32,6 +28,9 @@ RUN cd / \
     # && apt install --no-install-recommends -y cmake valgrind python-is-python3 libedit-dev \
     #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
+    && apt update \
+    && apt install --no-install-recommends -y libopam-file-format-ocaml-dev \
+    #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
 
 
@@ -51,26 +50,26 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
-    # 先试试手动安装 llvm
+    # # 先试试手动安装 llvm
     # && cd /usr/src \
-    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    && cd llvm-project/ \
-
-
+    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # && cd llvm-project/ \
     # && mkdir _build \
-    # && cd /usr/src/llvm-project/_build \
-    # && cmake \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   -DBUILD_SHARED_LIBS=ON \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
+
+    
+    && cd /usr/src/llvm-project/_build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
     # && cmake --build . \
     # && cmake --build . --target install \
     

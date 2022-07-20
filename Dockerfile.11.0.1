@@ -25,8 +25,10 @@ RUN cd / \
     && ln -s /usr/include/malloc.h malloc/malloc.h \
 
     && apt update \
-    && apt install --no-install-recommends -y cmake valgrind python-is-python3 libedit-dev \
-        libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
+    && apt install --no-install-recommends -y apt-utils \
+    && apt install --no-install-recommends -y apt-utils cmake \
+    && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
+    && apt install --no-install-recommends -y llvm-14-doc llvm-14-dev libllvm-14-ocaml-dev \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

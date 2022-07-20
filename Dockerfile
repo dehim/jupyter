@@ -1,34 +1,36 @@
-FROM dehim/jupyter:11.0.0
+FROM dehim/jupyter:11.0.1
 
 
 
 
 
 RUN cd / \
-    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-	        "\n" \
-	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye-14.list \
-    && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
+    # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	  #       "\n" \
+	  #       > /etc/apt/sources.list.d/llvm-toolchain-bullseye-14.list \
+    # && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
 
     
-    && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
-    && unzip ninja-linux.zip -d /usr/bin/ \
+    # && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
+    # && unzip ninja-linux.zip -d /usr/bin/ \
 
+
+    # # && apt update \
+    # # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
+   
+    # # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
+    # && cd /usr/include \
+    # && mkdir -p /usr/include/malloc \
+    # && ln -s /usr/include/malloc.h malloc/malloc.h \
 
     # && apt update \
-    # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
-   
-    # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
-    && cd /usr/include \
-    && mkdir -p /usr/include/malloc \
-    && ln -s /usr/include/malloc.h malloc/malloc.h \
+    # && apt install --no-install-recommends -y cmake valgrind python-is-python3 libedit-dev \
+    #     libllvm-14-ocaml-dev libllvm14 libpfm4-dev \
 
-    && apt update \
-    && apt install --no-install-recommends -y apt-utils \
-    && apt install --no-install-recommends -y apt-utils cmake \
-    && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
-    && apt install --no-install-recommends -y llvm-14-doc llvm-14-dev libllvm-14-ocaml-dev \
+
+
+
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \
@@ -52,21 +54,21 @@ RUN cd / \
     # && mkdir _build \
 
     
-    # && cd _build \
-    # && cmake \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   -DBUILD_SHARED_LIBS=ON \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
-    # # && cmake --build . \
-    # # && cmake --build . --target install \
+    && cd /usr/src/llvm-project/_build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
+    # && cmake --build . \
+    # && cmake --build . --target install \
     
 
 

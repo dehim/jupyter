@@ -6,7 +6,7 @@ LABEL maintainer="dehim"
 ENV DEBIAN_FRONTEND='noninteractive' 
 
 RUN cd / \
-    && cd /usr/src \
+    && cd /tmp/ \
     # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 	  #       "\n" \
@@ -51,7 +51,7 @@ RUN cd / \
     # 28018if sys.path[0] in ('', os.getcwd()):
     # 28019FileNotFoundError: [Errno 2] No such file or directory
     # && wget https://pip.vnpy.com/colletion/ta-lib-0.4.0-src.tar.gz \
-    && cd /usr/src/ \
+    && cd /tmp/ \
     && wget https://nchc.dl.sourceforge.net/project/ta-lib/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz \
     && tar -xf ta-lib-0.4.0-src.tar.gz \
     && cd ta-lib \
@@ -60,15 +60,13 @@ RUN cd / \
     # && make -j$(getconf _NPROCESSORS_ONLN) \
     && make \
     && make install \
-    && rm -rf /usr/src/* \
     # install ta-lib end
 
 
 # install PIP begin
-    && cd /usr/src/ \
+    && cd /tmp/ \
     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
     && python get-pip.py \
-    && rm get-pip.py \
 
  && python -m pip install --upgrade \
          z3 \
@@ -96,13 +94,12 @@ RUN cd / \
 
 
 # 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
-    && cd /usr/src/ \
+    && cd /tmp/ \
     && git clone https://github.com/ocaml/ocaml.git \
     && cd ocaml \
     && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
     && make \
     && make install \
-    && rm -rf ocaml \
 
 
 
@@ -116,25 +113,25 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
-    # # 先试试手动安装 llvm
-    && cd /usr/src \
-    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    # # && cd llvm-project/ \
+    # # # 先试试手动安装 llvm
+    # && cd /usr/src \
+    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # # # && cd llvm-project/ \
 
-    # && mkdir -p /usr/src/llvm-project/_build \
-    # && cd /usr/src/llvm-project/_build \
-    # && cmake \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   -DBUILD_SHARED_LIBS=ON \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
+    && mkdir -p /usr/src/llvm-project/_build \
+    && cd /usr/src/llvm-project/_build \
+    && cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
 
 
     # && cmake --build . \

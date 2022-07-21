@@ -6,11 +6,11 @@ FROM dehim/jupyter:11.0.0
 
 RUN cd / \
     && cd /usr/src \
-    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-	        "\n" \
-	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye.list \
-    && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
+    # && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	  #       "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	  #       "\n" \
+	  #       > /etc/apt/sources.list.d/llvm-toolchain-bullseye.list \
+    # && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
 
     
     && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
@@ -28,9 +28,10 @@ RUN cd / \
     && apt update \
     && apt install --no-install-recommends -y apt-utils cmake \
     && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
-    && apt install --no-install-recommends -y libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
-        libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man ocaml-nox ocaml-base-nox \
-        python3-jupyterlab-pygments python3-pygments \
+    && apt install --no-install-recommends -y libllvm-11-ocaml-dev \
+    # libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
+    #     libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man ocaml-nox ocaml-base-nox \
+    #     python3-jupyterlab-pygments python3-pygments \
 
     # && mkdir -p /usr/src \
     # && chmod -R 777 /usr/src/ \

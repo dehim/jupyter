@@ -17,6 +17,8 @@ RUN cd / \
     && unzip ninja-linux.zip -d /usr/bin/ \
 
 
+
+
     # && apt update \
     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
@@ -27,7 +29,8 @@ RUN cd / \
 
     && apt update \
     && apt install --no-install-recommends -y apt-utils cmake \
-    && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev \
+    && apt install --no-install-recommends -y valgrind python-is-python3 libedit-dev z3 libz3-dev libpfm4-dev \
+    # && apt install --no-install-recommends -y *llvm-11* \
     && apt install --no-install-recommends -y libllvm-11-ocaml-dev \
     # libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
     #     libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man ocaml-nox ocaml-base-nox \
@@ -40,11 +43,11 @@ RUN cd / \
 
 
 
-# install PIP begin
-    && cd /usr/src/ \
-    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-    && python get-pip.py \
-    && rm get-pip.py \
+# # install PIP begin
+#     && cd /usr/src/ \
+#     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+#     && python get-pip.py \
+#     && rm get-pip.py \
 
 
 
@@ -57,13 +60,12 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
-    # # 先试试手动安装 llvm
-    # && cd /usr/src \
-    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # 先试试手动安装 llvm
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     # && cd llvm-project/ \
-    # && mkdir _build \
 
-    
+    && mkdir -p /usr/src/llvm-project/_build \
     && cd  /usr/src/llvm-project/_build \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \

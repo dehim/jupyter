@@ -60,13 +60,13 @@ RUN cd / \
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
 
 
-    # 先试试手动安装 llvm
-    && cd /usr/src \
-    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
-    # && cd llvm-project/ \
+    # # 先试试手动安装 llvm
+    # && cd /usr/src \
+    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    # # && cd llvm-project/ \
 
     && mkdir -p /usr/src/llvm-project/_build \
-    && cd  /usr/src/llvm-project/_build \
+    && cd /usr/src/llvm-project/_build \
     && cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \

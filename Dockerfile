@@ -92,14 +92,14 @@ RUN cd / \
          jupyter_nbextensions_configurator \
          pandas \
 
-
-# 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
-    && cd /tmp/ \
-    && git clone https://github.com/ocaml/ocaml.git \
-    && cd ocaml \
-    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
-    && make \
-    && make install \
+# # 看来这个不用安装
+# # 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
+#     && cd /tmp/ \
+#     && git clone https://github.com/ocaml/ocaml.git \
+#     && cd ocaml \
+#     && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
+#     && make \
+#     && make install \
 
 
 
@@ -111,6 +111,8 @@ RUN cd / \
 
      
       # -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      
+      # -DLLVM_ENABLE_BINDINGS=OFF \
 
 
     # # # 先试试手动安装 llvm
@@ -118,20 +120,19 @@ RUN cd / \
     # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     # # # && cd llvm-project/ \
 
-    && mkdir -p /usr/src/llvm-project/_build \
-    && cd /usr/src/llvm-project/_build \
-    && cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
-      -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_BUILD_DOCS=false \
-      -DLLVM_ENABLE_PROJECTS=clang \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-      -DLLVM_ENABLE_BINDINGS=OFF \
-      -G "Ninja" ../llvm \
+    # && mkdir -p /usr/src/llvm-project/_build \
+    # && cd /usr/src/llvm-project/_build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+    #   -G "Ninja" ../llvm \
 
 
     # && cmake --build . \
@@ -160,10 +161,10 @@ RUN cd / \
     # # && cmake --build . 2>&1 >/dev/null \
     # # && cmake --build . --target install \
 
-    # && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
-    # && cd llvm/tools \
-    # && git clone http://root.cern.ch/git/cling.git \
-    # && git clone -b cling-patches http://root.cern.ch/git/clang.git \
+    && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
+    && cd llvm/tools \
+    && git clone http://root.cern.ch/git/cling.git \
+    && git clone -b cling-patches http://root.cern.ch/git/clang.git \
     # && cd .. \
     # && mkdir _build \
     # && cd _build \

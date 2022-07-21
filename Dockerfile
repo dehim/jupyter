@@ -1,6 +1,6 @@
 FROM dehim/jupyter:11.0.26
 
-LABEL maintainer
+# LABEL maintainer
 
 RUN cd / \
 #     && cd /tmp/ \

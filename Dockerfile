@@ -161,6 +161,7 @@ RUN cd / \
     # # && cmake --build . 2>&1 >/dev/null \
     # # && cmake --build . --target install \
 
+    && cd /usr/src \
     && git clone -b cling-patches http://root.cern.ch/git/llvm.git \
     && cd llvm/tools \
     && git clone http://root.cern.ch/git/cling.git \

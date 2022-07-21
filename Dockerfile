@@ -172,7 +172,7 @@ RUN cd / \
 
 
 
-
+    && export PATH=$PATH:/usr/lib/llvm-11/bin \
 
     && mkdir -p /usr/src/build_llvm \
     && cd /usr/src/build_llvm \
@@ -194,7 +194,7 @@ RUN cd / \
       -DLLVM_BUILD_DOCS=false \
       -G "Ninja" ../llvm \
     && cmake --build . 2>&1 >/dev/null \
-    && cmake --build . --target install \
+    # && cmake --build . --target install \
 
 
 

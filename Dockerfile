@@ -41,6 +41,14 @@ RUN cd / \
     # && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
+# 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
+    && cd /usr/src/ \
+    && git clone https://github.com/ocaml/ocaml.git \
+    && cd ocaml \
+    && ./configure \
+    && make \
+    && make install \
+    && rm -rf ocaml \
 
 
 # # install PIP begin

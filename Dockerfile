@@ -1,8 +1,9 @@
 FROM dehim/jupyter:11.0.0
 
+LABEL maintainer="dehim"
 
-
-
+#避免安装过程弹出框
+ENV DEBIAN_FRONTEND='noninteractive' 
 
 RUN cd / \
     && cd /usr/src \
@@ -30,8 +31,8 @@ RUN cd / \
     && apt update \
     && apt install -y apt-utils cmake \
     && apt install -y valgrind python-is-python3 libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \
-    && apt install -y *llvm-11* \
-    # && apt install -y libllvm-11-ocaml-dev \
+    # && apt install -y *llvm-11* \
+    && apt install -y libllvm-11-ocaml-dev \
     # libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \
     #     libctypes-ocaml-dev libintegers-ocaml libintegers-ocaml-dev ocaml-compiler-libs ocaml-interp ocaml-man ocaml-nox ocaml-base-nox \
     #     python3-jupyterlab-pygments python3-pygments \
@@ -40,6 +41,37 @@ RUN cd / \
     # && chmod -R 777 /usr/src/ \
     # && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+
+# install PIP begin
+    && cd /usr/src/ \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python get-pip.py \
+    && rm get-pip.py \
+
+ && python -m pip install --upgrade \
+         z3 \
+         joblib \
+         Cython \
+         ipyparallel \
+        #  six \
+        #  wheel \
+         pytz \
+         retrying \
+         ta-lib \
+         statsmodels \
+         dataclasses \
+         qdarkstyle \
+         peewee \
+         pymysql \
+         wmi \
+         quickfix \
+         jupyter \
+         jupyterlab \
+         jupyterthemes \
+         jupyter_contrib_nbextensions \
+         jupyter_nbextensions_configurator \
+         pandas \
+
 
 # 安装 ocaml.(必须在上面pip之后安装，否则报错。另外如果通过pip安装，会导致llvm找不到)
     && cd /usr/src/ \
@@ -50,12 +82,6 @@ RUN cd / \
     && make install \
     && rm -rf ocaml \
 
-
-# # install PIP begin
-#     && cd /usr/src/ \
-#     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-#     && python get-pip.py \
-#     && rm get-pip.py \
 
 
 

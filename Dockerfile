@@ -29,7 +29,7 @@ RUN cd / \
 
     && apt update \
     && apt install -y apt-utils cmake \
-    && apt install -y valgrind python-is-python3 libedit-dev z3 libz3-dev libpfm4-dev \
+    && apt install -y valgrind python-is-python3 libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \
     && apt install -y *llvm-11* \
     # && apt install -y libllvm-11-ocaml-dev \
     # libfindlib-ocaml libfindlib-ocaml-dev ocaml-findlib libllvm-14-ocaml-dev libctypes-ocaml \

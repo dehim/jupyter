@@ -62,7 +62,7 @@ RUN cd / \
     && make install \
     && rm -rf /usr/src/* \
     # install ta-lib end
-    
+
 
 # install PIP begin
     && cd /usr/src/ \
@@ -117,24 +117,24 @@ RUN cd / \
 
 
     # # 先试试手动安装 llvm
-    # && cd /usr/src \
-    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     # # && cd llvm-project/ \
 
-    && mkdir -p /usr/src/llvm-project/_build \
-    && cd /usr/src/llvm-project/_build \
-    && cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
-      -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_BUILD_DOCS=false \
-      -DLLVM_ENABLE_PROJECTS=clang \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-      -DLLVM_ENABLE_BINDINGS=OFF \
-      -G "Ninja" ../llvm \
+    # && mkdir -p /usr/src/llvm-project/_build \
+    # && cd /usr/src/llvm-project/_build \
+    # && cmake \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+    #   -DLLVM_ENABLE_BINDINGS=OFF \
+    #   -G "Ninja" ../llvm \
 
 
     # && cmake --build . \

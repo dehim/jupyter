@@ -42,6 +42,28 @@ RUN cd / \
     # && cd /usr/src \
     # && bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
 
+
+       # install ta-lib begin 
+    # 源文件没有添加参数，会报错mv: cannot stat '.deps/gen_code-gen_code.Tpo': No such file or directory
+    # talib/_ta_lib.c:526:28: fatal error: ta-lib/ta_defs.h: 没有那个文件或目录
+    # 在升级pip前安装ta-lib begin
+    # 28017File "/usr/lib/python3.7/site-packages/pip/__main__.py", line 8, in <module>
+    # 28018if sys.path[0] in ('', os.getcwd()):
+    # 28019FileNotFoundError: [Errno 2] No such file or directory
+    # && wget https://pip.vnpy.com/colletion/ta-lib-0.4.0-src.tar.gz \
+    && cd /usr/src/ \
+    && wget https://nchc.dl.sourceforge.net/project/ta-lib/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz \
+    && tar -xf ta-lib-0.4.0-src.tar.gz \
+    && cd ta-lib \
+    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
+    # If you build TA-Lib using make -jX it will fail but that's OK! Simply rerun make -jX followed by [sudo] make install.
+    # && make -j$(getconf _NPROCESSORS_ONLN) \
+    && make \
+    && make install \
+    && rm -rf /usr/src/* \
+    # install ta-lib end
+    
+
 # install PIP begin
     && cd /usr/src/ \
     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \

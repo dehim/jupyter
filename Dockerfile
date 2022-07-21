@@ -77,7 +77,7 @@ RUN cd / \
     && cd /usr/src/ \
     && git clone https://github.com/ocaml/ocaml.git \
     && cd ocaml \
-    && ./configure \
+    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
     && make \
     && make install \
     && rm -rf ocaml \

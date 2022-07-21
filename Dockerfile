@@ -193,7 +193,7 @@ RUN cd / \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
       -G "Ninja" ../llvm \
-    && cmake --build . \
+    && cmake --build . 2>&1 >/dev/null \
     && cmake --build . --target install \
 
 

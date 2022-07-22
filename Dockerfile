@@ -179,20 +179,24 @@ RUN cd / \
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libcxx-11.0.1.src.tar.xz \
-    && tar -xf libcxx-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+    && tar -xf libcxx-11.0.1.src.tar.xz -C /usr/src/ \
+    && mv /usr/src/libcxx-11.0.1.src /usr/src/libcxx \
 
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libcxxabi-11.0.1.src.tar.xz \
-    && tar -xf libcxxabi-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+    && tar -xf libcxxabi-11.0.1.src.tar.xz -C /usr/src/ \
+    && mv /usr/src/libcxxabi-11.0.1.src /usr/src/libcxxabi \
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/lld-11.0.1.src.tar.xz \
-    && tar -xf lld-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+    && tar -xf lld-11.0.1.src.tar.xz -C /usr/src/ \
+    && mv /usr/src/lld-11.0.1.src /usr/src/lld \
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libunwind-11.0.1.src.tar.xz \
-    && tar -xf libunwind-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+    && tar -xf libunwind-11.0.1.src.tar.xz -C /usr/src/ \
+    && mv /usr/src/libunwind-11.0.1.src /usr/src/libunwind \
 
 
     && export PATH=$PATH:/usr/lib/llvm-11/bin \

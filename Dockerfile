@@ -180,12 +180,23 @@ RUN cd / \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libcxxabi-11.0.1.src.tar.xz \
     && tar -xf libcxxabi-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
 
+    && cd /tmp/ \
+    && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/lld-11.0.1.src.tar.xz \
+    && tar -xf lld-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+
+    && cd /tmp/ \
+    && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libunwind-11.0.1.src.tar.xz \
+    && tar -xf libunwind-11.0.1.src.tar.xz -C /usr/src/llvm/tools/ \
+
 
     && export PATH=$PATH:/usr/lib/llvm-11/bin \
 
     && mkdir -p /usr/src/build_llvm \
     && cd /usr/src/build_llvm \
     && cmake \
+      -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind" \
+      -DLLVM_ENABLE_LIBCXX=ON \
+      -DLLVM_ENABLE_LLD=ON \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
       -DBUILD_SHARED_LIBS=ON \

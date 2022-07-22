@@ -176,6 +176,12 @@ RUN cd / \
     && tar -xf clang-11.0.1.src.tar.xz -C /usr/src/ \
     && mv /usr/src/clang-11.0.1.src /usr/src/clang \
 
+    
+    && cd /tmp/ \
+    && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/compiler-rt-11.0.1.src.tar.xz \
+    && tar -xf compiler-rt-11.0.1.src.tar.xz -C /usr/src/ \
+    && mv /usr/src/compiler-rt-11.0.1.src /usr/src/compiler-rt \
+
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libcxx-11.0.1.src.tar.xz \
@@ -188,10 +194,10 @@ RUN cd / \
     && tar -xf libcxxabi-11.0.1.src.tar.xz -C /usr/src/ \
     && mv /usr/src/libcxxabi-11.0.1.src /usr/src/libcxxabi \
 
-    && cd /tmp/ \
-    && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/lld-11.0.1.src.tar.xz \
-    && tar -xf lld-11.0.1.src.tar.xz -C /usr/src/ \
-    && mv /usr/src/lld-11.0.1.src /usr/src/lld \
+    # && cd /tmp/ \
+    # && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/lld-11.0.1.src.tar.xz \
+    # && tar -xf lld-11.0.1.src.tar.xz -C /usr/src/ \
+    # && mv /usr/src/lld-11.0.1.src /usr/src/lld \
 
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/libunwind-11.0.1.src.tar.xz \
@@ -204,9 +210,11 @@ RUN cd / \
     && mkdir -p /usr/src/build_llvm \
     && cd /usr/src/build_llvm \
     && cmake \
-      -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind" \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
       -DLLVM_ENABLE_LIBCXX=ON \
-      -DLLVM_ENABLE_LLD=ON \
+# Host compiler does not support '-fuse-ld=lld'
+      # -DLLVM_ENABLE_LLD=ON \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
       -DBUILD_SHARED_LIBS=ON \
@@ -223,7 +231,9 @@ RUN cd / \
       -DLLVM_BUILD_TESTS=false \
       -DLLVM_BUILD_DOCS=false \
       -G "Ninja" ../llvm \
-    && cmake --build . 2>&1 >/dev/null \
+    && ninja cxx cxxabi \
+    && ninja \
+    # && cmake --build . 2>&1 >/dev/null \
     # && cmake --build . --target install \
 
 

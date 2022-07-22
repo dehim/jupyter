@@ -174,7 +174,7 @@ RUN cd / \
     && cd /tmp/ \
     && wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/clang-11.0.1.src.tar.xz \
     && tar -xf clang-11.0.1.src.tar.xz -C /usr/src/ \
-    && mv /usr/src/clang-11.0.1.src /usr/src/clang 
+    && mv /usr/src/clang-11.0.1.src /usr/src/clang \
 
 
     && cd /tmp/ \

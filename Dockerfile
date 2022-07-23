@@ -30,6 +30,7 @@ RUN cd / \
 #     && ln -s /usr/bin/clang++-14 /usr/bin/clang++ \
 #     && ln -s /usr/bin/lld-14 /usr/bin/11d \
 
+      && ln -s /usr/bin/FileCheck-14 /usr/bin/FileCheck \
 
 
 # #     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
@@ -134,11 +135,16 @@ RUN cd / \
     && mkdir -p /usr/src/llvm-project/_build \
     && cd /usr/src/llvm-project/_build \
     && cmake \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
       -DLLVM_ENABLE_PROJECTS=clang \
+      -DLLVM_ENABLE_LLD=ON \
+      -DLLVM_BUILD_LLVM_DYLIB=ON \
+      -DLLVM_LINK_LLVM_DYLIB=ON \
       -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
+      -DBUILD_SHARED_LIBS=OFF \
       -DLLVM_CCACHE_BUILD=OFF \
       -DLLVM_APPEND_VC_REV=OFF \
       -DLLVM_BUILD_DOCS=false \
@@ -146,6 +152,7 @@ RUN cd / \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
       -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
       -G "Ninja" ../llvm \
 
 

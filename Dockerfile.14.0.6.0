@@ -1,43 +1,43 @@
-# FROM gcc:11-bullseye
-FROM dehim/jupyter:14.0.6.0
+FROM gcc:11-bullseye
+# FROM dehim/jupyter:11.0.28
 
 
-# LABEL maintainer="dehim"
+LABEL maintainer="dehim"
 
-# #避免安装过程弹出框
-# ENV DEBIAN_FRONTEND='noninteractive' 
+#避免安装过程弹出框
+ENV DEBIAN_FRONTEND='noninteractive' 
 
 RUN cd / \
-#     && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-# 	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
-# 	        "\n" \
-# 	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye.list \
-#     && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
+    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
+	        "\n" \
+	        > /etc/apt/sources.list.d/llvm-toolchain-bullseye.list \
+    && wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|apt-key add - \
 
     
-#     && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
-#     && unzip ninja-linux.zip -d /usr/bin/ \
+    && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
+    && unzip ninja-linux.zip -d /usr/bin/ \
 
 
 
 
-#     && apt update \
-#     && apt install -y cmake ninja-build \
-#     && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
-#     && apt install -y llvm-14 clang-14 lld-14 \
+    && apt update \
+    && apt install -y cmake ninja-build \
+    && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
+    && apt install -y llvm-14 clang-14 lld-14 \
 
-#     && ln -s /usr/bin/clang-14 /usr/bin/clang \
-#     && ln -s /usr/bin/clang++-14 /usr/bin/clang++ \
-#     && ln -s /usr/bin/lld-14 /usr/bin/11d \
+    && ln -s /usr/bin/clang-14 /usr/bin/clang \
+    && ln -s /usr/bin/clang++-14 /usr/bin/clang++ \
+    && ln -s /usr/bin/lld-14 /usr/bin/11d \
 
 
 
-# #     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
+#     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
    
-# #     # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
-#     && cd /usr/include \
-#     && mkdir -p /usr/include/malloc \
-#     && ln -s /usr/include/malloc.h malloc/malloc.h \
+#     # #7 55.94 -- Looking for malloc/malloc.h - not found (/usr/include/malloc.h已存在，造一个软连接)
+    && cd /usr/include \
+    && mkdir -p /usr/include/malloc \
+    && ln -s /usr/include/malloc.h malloc/malloc.h \
 
 #     && apt update \
 #     && apt install -y apt-utils cmake \
@@ -127,30 +127,30 @@ RUN cd / \
 
 
     # # 先试试手动安装 llvm
-    # && cd /usr/src \
-    # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
+    && cd /usr/src \
+    && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     # # && cd llvm-project/ \
 
-    && mkdir -p /usr/src/llvm-project/_build \
-    && cd /usr/src/llvm-project/_build \
-    && cmake \
-      -DLLVM_ENABLE_PROJECTS=clang \
-      -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-      -DBUILD_SHARED_LIBS=ON \
-      -DLLVM_CCACHE_BUILD=OFF \
-      -DLLVM_APPEND_VC_REV=OFF \
-      -DLLVM_BUILD_DOCS=false \
-      -DLLVM_ENABLE_PROJECTS=clang \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
-      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-      -G "Ninja" ../llvm \
+    # && mkdir -p /usr/src/llvm-project/_build \
+    # && cd /usr/src/llvm-project/_build \
+    # && cmake \
+    
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
+    #   -DCMAKE_BUILD_TYPE=Release \
+    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+    #   -DBUILD_SHARED_LIBS=ON \
+    #   -DLLVM_CCACHE_BUILD=OFF \
+    #   -DLLVM_APPEND_VC_REV=OFF \
+    #   -DLLVM_BUILD_DOCS=false \
+    #   -DLLVM_ENABLE_PROJECTS=clang \
+    #   -DCMAKE_INSTALL_PREFIX=/usr \
+    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+    #   -G "Ninja" ../llvm \
 
 
-    && cmake --build . \
-    && cmake --build . --target install \
+#     # && cmake --build . \
+#     # && cmake --build . --target install \
     
 
 

@@ -135,6 +135,9 @@ RUN cd / \
     && mkdir -p /usr/src/llvm-project/_build \
     && cd /usr/src/llvm-project/_build \
     && cmake \
+      -DLIBCXX_USE_COMPILER_RT=YES \
+      -DLIBCXXABI_USE_COMPILER_RT=YES \
+      -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
       -DCMAKE_C_COMPILER=clang \
       -DCMAKE_CXX_COMPILER=clang++ \
       -DLLVM_ENABLE_PROJECTS=clang \

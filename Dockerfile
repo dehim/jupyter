@@ -9,15 +9,6 @@ FROM dehim/jupyter:14.0.6.0
 
 RUN cd / \
 
-
-    && cd /tmp/ \
-    && wget http://www.zlib.net/zlib-1.2.12.tar.gz \
-    && tar -zxvf zlib-1.2.12.tar.gz \
-    && cd zlib-1.2.12 \
-    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
-    && make \
-    && make install \
-
 #     && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 # 	        "\ndeb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
 # 	        "\n" \

@@ -1,5 +1,5 @@
 # FROM gcc:11-bullseye
-FROM dehim/jupyter:11.0.0
+FROM dehim/jupyter:14.0.6.0
 
 
 # LABEL maintainer="dehim"
@@ -10,14 +10,14 @@ FROM dehim/jupyter:11.0.0
 RUN cd / \
 
 
-    # && cd /usr/src/ \
-    # && wget http://www.zlib.net/zlib-1.2.12.tar.gz \
-    # && tar -zxvf zlib-1.2.12.tar.gz \
-    # && cd zlib-1.2.12 \
-    # && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
-    # && make \
-    # && make install \
-    # && rm -rf /usr/src/* \
+    && cd /usr/src/ \
+    && wget http://www.zlib.net/zlib-1.2.12.tar.gz \
+    && tar -zxvf zlib-1.2.12.tar.gz \
+    && cd zlib-1.2.12 \
+    && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu \
+    && make \
+    && make install \
+    && rm -rf /usr/src/* \
 
 
 #     && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" \
@@ -33,18 +33,18 @@ RUN cd / \
 
 
 
-    && apt update \
-    && apt install -y cmake ninja-build \
-    && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
+#     && apt update \
+#     && apt install -y cmake ninja-build \
+#     && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
 #     && apt install -y llvm-14 clang-14 lld-14 \
 
 #     && ln -s /usr/bin/clang-14 /usr/bin/clang \
 #     && ln -s /usr/bin/clang++-14 /usr/bin/clang++ \
 #     && ln -s /usr/bin/lld-14 /usr/bin/11d \
 
-      # && ln -s /usr/bin/FileCheck-14 /usr/bin/FileCheck \
+      && ln -s /usr/bin/FileCheck-14 /usr/bin/FileCheck \
       #7 12847.1 /usr/include/limits.h:26:10: fatal error: 'bits/libc-header-start.h' file not found
-      # && ln -s /usr/include/x86_64-linux-gnu/bits /usr/include/bits \
+      && ln -s /usr/include/x86_64-linux-gnu/bits /usr/include/bits \
 
 
 # #     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \
@@ -140,44 +140,44 @@ RUN cd / \
       
 #       # -DLLVM_ENABLE_BINDINGS=OFF \
 
-#       -DCMAKE_C_COMPILER=clang \
-#       -DCMAKE_CXX_COMPILER=clang++ \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
 
-# # 编译lld
-#     && mkdir -p /usr/src/llvm-project/build_lld \
-#     && cd /usr/src/llvm-project/build_lld \
-#     && cmake -G Ninja \
-#       -DCMAKE_BUILD_TYPE=Release \
-#       -DLLVM_ENABLE_LLD=OFF \
-#       ../lld/ \
-#     && ninja \
-#     && ninja install \
-
-
-# # 编译clang
-#     && mkdir -p /usr/src/llvm-project/build_clang \
-#     && cd /usr/src/llvm-project/build_clang \
-#     && cmake -G Ninja \
-#       -DCMAKE_BUILD_TYPE=Release \
-#       -DLLVM_ENABLE_LLD=ON \
-#       -DCMAKE_C_COMPILER=clang \
-#       -DCMAKE_CXX_COMPILER=clang++ \
-#       -DLLVM_PATH=../llvm/ \
-#       ../clang/ \
-#     && ninja \
-#     && ninja install \
+# 编译lld
+    && mkdir -p /usr/src/llvm-project/build_lld \
+    && cd /usr/src/llvm-project/build_lld \
+    && cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_ENABLE_LLD=OFF \
+      ../lld/ \
+    && ninja \
+    && ninja install \
 
 
-#     && mkdir -p /usr/src/llvm-project/build_compiler-rt \
-#     && cd /usr/src/llvm-project/build_compiler-rt \
-#     && cmake -G Ninja \
-#       -DCMAKE_BUILD_TYPE=Release \
-#       -DCMAKE_LINKER=lld \
-#       -DCMAKE_C_COMPILER=clang \
-#       -DCMAKE_CXX_COMPILER=clang++ \
-#       ../compiler-rt/ \
-#     && ninja \
-#     && ninja install \
+# 编译clang
+    && mkdir -p /usr/src/llvm-project/build_clang \
+    && cd /usr/src/llvm-project/build_clang \
+    && cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_ENABLE_LLD=ON \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
+      -DLLVM_PATH=../llvm/ \
+      ../clang/ \
+    && ninja \
+    && ninja install \
+
+
+    && mkdir -p /usr/src/llvm-project/build_compiler-rt \
+    && cd /usr/src/llvm-project/build_compiler-rt \
+    && cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_LINKER=lld \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
+      ../compiler-rt/ \
+    && ninja \
+    && ninja install \
 
 
 
@@ -186,35 +186,35 @@ RUN cd / \
     # && git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
     # # && cd llvm-project/ \
 
-    # && mkdir -p /usr/src/llvm-project/_build \
-    # && cd /usr/src/llvm-project/_build \
-    # && cmake \
-    #   -DLIBCXX_USE_COMPILER_RT=YES \
-    #   -DLIBCXXABI_USE_COMPILER_RT=YES \
-    #   -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
-    #   -DCMAKE_C_COMPILER=clang \
-    #   -DCMAKE_CXX_COMPILER=clang++ \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DLLVM_ENABLE_LLD=ON \
-    #   -DLLVM_BUILD_LLVM_DYLIB=ON \
-    #   -DLLVM_LINK_LLVM_DYLIB=ON \
-    #   -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
-    #   -DCMAKE_BUILD_TYPE=Release \
-    #   -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
-    #   -DBUILD_SHARED_LIBS=OFF \
-    #   -DLLVM_CCACHE_BUILD=OFF \
-    #   -DLLVM_APPEND_VC_REV=OFF \
-    #   -DLLVM_BUILD_DOCS=false \
-    #   -DLLVM_ENABLE_PROJECTS=clang \
-    #   -DCMAKE_INSTALL_PREFIX=/usr \
-    #   -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
-    #   -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
-    #   -DLLVM_ENABLE_BINDINGS=OFF \
-    #   -G "Ninja" ../llvm \
+    && mkdir -p /usr/src/llvm-project/_build \
+    && cd /usr/src/llvm-project/_build \
+    && cmake \
+      -DLIBCXX_USE_COMPILER_RT=YES \
+      -DLIBCXXABI_USE_COMPILER_RT=YES \
+      -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DLLVM_ENABLE_LLD=ON \
+      -DLLVM_BUILD_LLVM_DYLIB=ON \
+      -DLLVM_LINK_LLVM_DYLIB=ON \
+      -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=YES \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DLLVM_CCACHE_BUILD=OFF \
+      -DLLVM_APPEND_VC_REV=OFF \
+      -DLLVM_BUILD_DOCS=false \
+      -DLLVM_ENABLE_PROJECTS=clang \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib/x86_64-linux-gnu \
+      -DLLVM_TARGETS_TO_BUILD="host;NVPTX" \
+      -DLLVM_ENABLE_BINDINGS=OFF \
+      -G "Ninja" ../llvm \
 
 
-    # && cmake --build . 2>&1 >/dev/null \
-    # && cmake --build . --target install \
+    && cmake --build . 2>&1 >/dev/null \
+    && cmake --build . --target install \
     
 
 

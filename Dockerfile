@@ -31,6 +31,8 @@ RUN cd / \
 #     && ln -s /usr/bin/lld-14 /usr/bin/11d \
 
       && ln -s /usr/bin/FileCheck-14 /usr/bin/FileCheck \
+      #7 12847.1 /usr/include/limits.h:26:10: fatal error: 'bits/libc-header-start.h' file not found
+      && ln -s /usr/include/x86_64-linux-gnu/bits /usr/include/bits \
 
 
 # #     # && apt-get install -y z3 libz3-dev libllvm-14-ocaml-dev libllvm14 libpfm4-dev valgrind libedit-dev \

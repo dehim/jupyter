@@ -30,12 +30,14 @@ RUN cd / \
 #     && wget https://github.com/ninja-build/ninja/releases/download/v1.11.0/ninja-linux.zip \
 #     && unzip ninja-linux.zip -d /usr/bin/ \
 
+    && ln -s /usr/bin/FileCheck-14 /usr/bin/FileCheck \
+    #7 12847.1 /usr/include/limits.h:26:10: fatal error: 'bits/libc-header-start.h' file not found
+    && ln -s /usr/include/x86_64-linux-gnu/bits /usr/include/bits \
 
 
-
-    && apt update \
-    && apt install -y cmake ninja-build \
-    && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
+    # && apt update \
+    # && apt install -y cmake ninja-build \
+    # && apt install -y valgrind python-is-python3 python3-dev python3-distro libedit-dev z3 libz3-dev libpfm4-dev python3-jupyterlab-pygments python3-pygments \   
 #     && apt install -y llvm-14 clang-14 lld-14 \
 
 #     && ln -s /usr/bin/clang-14 /usr/bin/clang \
@@ -140,32 +142,36 @@ RUN cd / \
       
 #       # -DLLVM_ENABLE_BINDINGS=OFF \
 
-#       -DCMAKE_C_COMPILER=clang \
-#       -DCMAKE_CXX_COMPILER=clang++ \
 
-# # 编译lld
-#     && mkdir -p /usr/src/llvm-project/build_lld \
-#     && cd /usr/src/llvm-project/build_lld \
-#     && cmake -G Ninja \
-#       -DCMAKE_BUILD_TYPE=Release \
-#       -DLLVM_ENABLE_LLD=OFF \
-#       ../lld/ \
-#     && ninja \
-#     && ninja install \
+# 编译lld
+    && mkdir -p /usr/src/llvm-project/build_lld \
+    && cd /usr/src/llvm-project/build_lld \
+    && cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_ENABLE_LLD=OFF \
+      -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14 \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
+      ../lld/ \
+    && ninja \
+    && ninja install \
+    && cd usr/bin \
+    && rm -Rf ./lld \
+    && ln -s lld-14 ./lld \
 
 
-# # 编译clang
-#     && mkdir -p /usr/src/llvm-project/build_clang \
-#     && cd /usr/src/llvm-project/build_clang \
-#     && cmake -G Ninja \
-#       -DCMAKE_BUILD_TYPE=Release \
-#       -DLLVM_ENABLE_LLD=ON \
-#       -DCMAKE_C_COMPILER=clang \
-#       -DCMAKE_CXX_COMPILER=clang++ \
-#       -DLLVM_PATH=../llvm/ \
-#       ../clang/ \
-#     && ninja \
-#     && ninja install \
+# 编译clang
+    && mkdir -p /usr/src/llvm-project/build_clang \
+    && cd /usr/src/llvm-project/build_clang \
+    && cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_ENABLE_LLD=ON \
+      -DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-14 \
+      -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_COMPILER=clang++ \
+      ../clang/ \
+    && ninja \
+    && ninja install \
 
 
 #     && mkdir -p /usr/src/llvm-project/build_compiler-rt \

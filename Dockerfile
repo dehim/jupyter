@@ -1,5 +1,5 @@
 # FROM gcc:11-bullseye
-FROM dehim/jupyter:14.0.6.1
+FROM dehim/jupyter:14.0.6.0
 
 
 # LABEL maintainer="dehim"

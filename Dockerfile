@@ -155,7 +155,7 @@ RUN cd / \
       ../lld/ \
     && ninja \
     && ninja install \
-    && cd usr/bin \
+    && cd /usr/bin \
     && rm -Rf ./lld \
     && ln -s lld-14 ./lld \
 
